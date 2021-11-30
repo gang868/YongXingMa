@@ -1,0 +1,50 @@
+@import './style/weui.wxss'
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-sizing: border-box;
+} 
+
+button {
+  background: initial;
+}
+
+button:focus{
+  outline: 0;
+}
+
+button::after{
+  border: none;
+}
+
+
+page {
+  background: #f6f6f6;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.button {
+  width: 300rpx;
+  text-align: center;
+  margin: 5rpx auto 5rpx auto;
+  height: 80rpx;
+  color: white;
+  border-radius: 5px;
+  line-height: 80rpx;
+  background-color: #07c160;
+}
+
+.button_clear {
+  width: 300rpx;
+  text-align: center;
+  margin: 20% auto 0 auto;
+  height: 80rpx;
+  color: #07c160;
+  border-radius: 5px;
+  line-height: 80rpx;
+  background-color: rgba(0, 0, 0, 0.03);
+}

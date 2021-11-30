@@ -1,0 +1,51 @@
+<!--index.wxml-->
+<view class="page">
+  <view class="page__bd">
+    <view class="weui-cells weui-cells_after-title">
+      <view class="weui-cell">
+        <view class="weui-cell__bd">申请日期</view>
+        <view class="weui-cell__ft">{{applicationInfo.date}}</view>
+      </view>
+      <view class="weui-cell">
+        <view class="weui-cell__bd">当前状态</view>
+        <view class="weui-cell__ft">{{applicationInfo.status}}</view>
+      </view>
+      <view class="weui-cell">
+        <view class="weui-cell__bd">姓名</view>
+        <view class="weui-cell__ft">{{applicationInfo.name}}</view>
+      </view>
+      <view class="weui-cell">
+        <view class="weui-cell__bd">{{applicationInfo.idKind}}</view>
+        <view class="weui-cell__ft">{{applicationInfo.id}}</view>
+      </view>
+      <view class="weui-cell">
+        <view class="weui-cell__bd">联系方式</view>
+        <view class="weui-cell__ft">{{applicationInfo.contact}}</view>
+      </view>
+      <view class="weui-cell">
+        <view class="weui-cell__bd">家庭住址</view>
+        <view class="weui-cell__ft">{{applicationInfo.address}}</view>
+      </view>
+      <view class="weui-cell">
+        <view class="weui-cell__bd">码颜色</view>
+        <view class="weui-cell__ft">{{applicationInfo.codeColor}}</view>
+      </view>
+      <view class="weui-cell">
+        <view class="weui-cell__bd">变码原因</view>
+        <view class="weui-cell__ft">{{applicationInfo.reason}}</view>
+      </view>
+      <view class="weui-cell">
+        <view class="weui-cell__bd">核酸检测</view>
+        <view class="weui-cell__ft">{{applicationInfo.rnaReport}}</view>
+      </view>
+      <view class="weui-cell">
+        <view class="weui-cell__bd">14天行程</view>
+        <view class="weui-cell__ft">{{applicationInfo.travel}}</view>
+      </view>
+    </view>
+    <view class="button-sp-area" style="margin-top: 10px;">
+      <view class="weui-btn weui-btn_primary" wx:if="{{applicationInfo.status=='待审核'}}" bindtap="modApplicationInfo">修改</view>
+      <view class="weui-btn weui-btn_warn" wx:if="{{applicationInfo.status=='待审核'}}" bindtap="delApplicationinfo">删除</view>
+    </view>
+  </view>
+</view>

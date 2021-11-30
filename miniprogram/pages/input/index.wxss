@@ -1,0 +1,4 @@
+/* pages/input/index.wxss */
+.my-form {
+  padding: 10px;
+}

@@ -1,0 +1,83 @@
+<view class="page">
+  <view class="my-form">
+    <view class="weui-form__text-area">
+      <h3 class="weui-form__title">填写申请表</h3>
+    </view>
+    <view class="weui-form__control-area" style="margin-top: 10px;background-color: white;">
+      <view class="weui-cells__group weui-cells__group_form">
+        <!--姓名-->
+        <view class="weui-cell weui-cell_active">
+          <view class="weui-cell__hd">
+            <view class="weui-label">姓名</view>
+          </view>
+          <view class="weui-cell__bd weui-flex">
+            <input class="weui-input" placeholder-class="weui-input__placeholder" placeholder="输入姓名" value="{{applicationInfo.name}}" />
+          </view>
+        </view>
+        <!--联系方式-->
+        <view class="weui-cell weui-cell_active">
+          <view class="weui-cell__hd">
+            <view class="weui-label">联系方式</view>
+          </view>
+          <view class="weui-cell__bd weui-flex">
+            <input class="weui-input" placeholder-class="weui-input__placeholder" placeholder="输入手机号码（电话）" value="{{applicationInfo.contact}}" />
+          </view>
+        </view>
+        <!--证件类型-->
+        <view class="weui-cell weui-cell_active weui-cell_select weui-cell_select-after">
+          <view class="weui-cell__hd">
+            <view class="weui-label">证件类型</view>
+          </view>
+          <view class="weui-cell__bd weui-flex">
+            <picker value="{{idIndex}}" range="{{idKindList}}" bindchange="idKindChange">
+              <view class="weui-select">{{idKindList[idIndex]}}</view>
+            </picker>
+          </view>
+        </view>
+        <!--证件号码-->
+        <view class="weui-cell weui-cell_active">
+          <view class="weui-cell__hd">
+            <view class="weui-label">证件号码</view>
+          </view>
+          <view class="weui-cell__bd weui-flex">
+            <input class="weui-input" placeholder-class="weui-input__placeholder" placeholder="输入证件号码" value="{{applicationInfo.id}}" />
+          </view>
+        </view>
+        <!--家庭住址-->
+        <view class="weui-cell weui-cell_active">
+          <view class="weui-cell__hd">
+            <view class="weui-label">家庭住址</view>
+          </view>
+          <view class="weui-cell__bd weui-flex">
+            <input class="weui-input" auto-focus placeholder="输入当前家庭住址" value="{{applicationInfo.address}}" />
+          </view>
+        </view>
+        <!--码颜色-->
+        <view class="weui-cell weui-cell_active weui-cell_select weui-cell_select-after">
+          <view class="weui-cell__hd">
+            <view class="weui-label">码颜色</view>
+          </view>
+          <view class="weui-cell__bd weui-flex">
+            <picker value="{{codeIndex}}" range="{{codeColorList}}" bindchange="codeColorChange">
+              <view class="weui-select">{{codeColorList[codeIndex]}}</view>
+            </picker>
+          </view>
+        </view>
+        <!--变码原因-->
+        <view class="weui-cell weui-cell_active weui-cell_select weui-cell_select-after">
+          <view class="weui-cell__hd">
+            <view class="weui-label">变码原因</view>
+          </view>
+          <view class="weui-cell__bd weui-flex">
+            <picker value="{{reasonIndex}}" range="{{reasonList}}" bindchange="reasonChange">
+              <view class="weui-select">{{reasonList[reasonIndex]}}</view>
+            </picker>
+          </view>
+        </view>
+      </view>
+    </view>
+    <view class="weui-form__opr-area">
+      <view class="weui-btn weui-btn_primary" bindtap="saveAndUpload">保 存</view>
+    </view>
+  </view>
+</view>
