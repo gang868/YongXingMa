@@ -1,15 +1,13 @@
 // index.js
 Page({
   data: {
-    hasUserInfo: false,
-    showUploadTip: false,
     hasActiveApplication: false,
     applicationInfo: {
       applicationList: [{
-          pk: 20211128001,
+          _id: 20211128001,
+          openid: 'oNyvz4hb2x7eUUh_6f1j5T0Wls_c',
           date: '2021年11月28日',
           status: '已改码',
-          showItem: true,
           name: '张冠李',
           idKind: '护照',
           id: 'NB20171123',
@@ -17,21 +15,6 @@ Page({
           address: '双东路195弄50号305室',
           codeColor: '红码',
           reason: '其它',
-          rnaReport: '已上传',
-          travel: '已上传'
-        },
-        {
-          id: 20211127001,
-          date: '2021年11月27日',
-          status: '已改码',
-          showItem: true,
-          name: '张冠李',
-          idKind: '身份证',
-          id: '330205202012284450',
-          contact: '1390574XXXX',
-          address: '双东路195弄50号305室',
-          codeColor: '红码',
-          reason: '发热门诊就诊',
           rnaReport: '已上传',
           travel: '已上传'
         }
@@ -50,7 +33,8 @@ Page({
     this.getOpenId();
   },
 
-  getOpenId: function(){
+  getOpenId: function () {
+    var that = this;
     wx.showLoading({
       title: '读取用户信息',
     });
@@ -61,14 +45,18 @@ Page({
       }
     }).then((resp) => {
       console.log(resp.result.openid);
+      that.setData({
+        openid: resp.result.openid
+      });
+      wx.setStorageSync('openid', resp.result.openid)
     });
     wx.hideLoading();
   },
 
   getUserInfo: function (e) {
-    const that=this;
+    const that = this;
     wx.getUserProfile({
-      desc:'确认申请人微信信息',
+      desc: '确认申请人微信信息',
       success(res) {
         console.log(res.userInfo);
         wx.setStorageSync('userInfo', res.userInfo);

@@ -11,7 +11,7 @@
             <view class="weui-label">姓名</view>
           </view>
           <view class="weui-cell__bd weui-flex">
-            <input class="weui-input" placeholder-class="weui-input__placeholder" placeholder="输入姓名" value="{{applicationInfo.name}}" />
+            <input class="weui-input" type="text" placeholder-class="weui-input__placeholder" placeholder="输入姓名" value="{{applicationInfo.name}}" bindinput="nameInput"/>
           </view>
         </view>
         <!--联系方式-->
@@ -20,7 +20,7 @@
             <view class="weui-label">联系方式</view>
           </view>
           <view class="weui-cell__bd weui-flex">
-            <input class="weui-input" placeholder-class="weui-input__placeholder" placeholder="输入手机号码（电话）" value="{{applicationInfo.contact}}" />
+            <input class="weui-input" type="number" placeholder-class="weui-input__placeholder" placeholder="输入手机号码（电话）" value="{{applicationInfo.contact}}" bindinput="contactInput"/>
           </view>
         </view>
         <!--证件类型-->
@@ -40,7 +40,7 @@
             <view class="weui-label">证件号码</view>
           </view>
           <view class="weui-cell__bd weui-flex">
-            <input class="weui-input" placeholder-class="weui-input__placeholder" placeholder="输入证件号码" value="{{applicationInfo.id}}" />
+            <input class="weui-input" type="{{idInputType}}" placeholder-class="weui-input__placeholder" placeholder="输入证件号码" value="{{applicationInfo.id}}" maxlength="18" bindinput="idInput"/>
           </view>
         </view>
         <!--家庭住址-->
@@ -49,7 +49,7 @@
             <view class="weui-label">家庭住址</view>
           </view>
           <view class="weui-cell__bd weui-flex">
-            <input class="weui-input" auto-focus placeholder="输入当前家庭住址" value="{{applicationInfo.address}}" />
+            <input class="weui-input" auto-focus placeholder="输入当前家庭住址" value="{{applicationInfo.address}}" bindinput="addressInput"/>
           </view>
         </view>
         <!--码颜色-->
