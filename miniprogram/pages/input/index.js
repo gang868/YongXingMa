@@ -133,33 +133,57 @@ Page({
    * 
    */
   saveApplication: function (e) {
-    console.log('save....');
+    var that = this;
     wx.showLoading({
       title: '正在保存申请....',
     });
-    var that = this;
-    wx.cloud.callFunction({
-      name: 'quickstartFunctions',
-      data: {
-        type: 'createApplication',
-        data: this.data.applicationInfo
-      }
-    }).then((resp) => {
-      if(resp.success) {
-        console.log(res.data);
-      }
-    });
+    
+    if (this.data.applicationInfo._id) {
+      wx.cloud.callFunction({
+        name: 'quickstartFunctions',
+        data: {
+          type: 'updateApplication',
+          id: this.data.applicationInfo._id,
+          data: {
+            address: this.data.applicationInfo.address,
+            codeColor: this.data.applicationInfo.codeColor,
+            contact: this.data.applicationInfo.contact,
+            date: this.getDateStr(),
+            id: this.data.applicationInfo.id,
+            idKind: this.data.applicationInfo.idKind,
+            name: this.data.applicationInfo.name,
+            reason: this.data.applicationInfo.reason
+          }
+        }
+      }).then((resp) => {
+        wx.navigateTo({
+          url: '/pages/upload/index?kind=rnaReport',
+        })
+      });
+    } else {
+      wx.cloud.callFunction({
+        name: 'quickstartFunctions',
+        data: {
+          type: 'createApplication',
+          data: this.data.applicationInfo
+        }
+      }).then((resp) => {
+        wx.navigateTo({
+          url: '/pages/upload/index?kind=rnaReport',
+        })
+      });
+    }
     wx.hideLoading();
   },
 
-  getDateStr: function(){
+  getDateStr: function () {
     var timestamp = Date.parse(new Date());
     var date = new Date(timestamp);
     var y = date.getFullYear();
     var m = date.getMonth() + 1;
-    var ms = m < 10 ? '0' + m: m;
+    var ms = m < 10 ? '0' + m : m;
     var d = date.getDate();
-    var ds = d < 10? '0'+ d: d;
+    var ds = d < 10 ? '0' + d : d;
     return y + '/' + ms + '/' + ds;
   }
 })

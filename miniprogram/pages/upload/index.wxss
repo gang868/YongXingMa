@@ -1,1 +1,4 @@
 /* pages/upload/index.wxss */
+.my-form {
+  padding: 10px;
+}

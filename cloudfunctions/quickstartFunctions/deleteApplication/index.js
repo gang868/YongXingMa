@@ -8,10 +8,9 @@ const db = cloud.database();
 // 修改数据库信息云函数入口函数
 exports.main = async (event, context) => {
   try {
-    await db.collection('application').doc(event.id).update({
-      data: event.data,
+    await db.collection('application').doc(event.id).remove({
       success: function (res) {
-        console.log(res);
+        return res;
       }
     })
   } catch (e) {

@@ -9,19 +9,14 @@ Page({
 
   onLoad: function (options) {
     this.getOpenId();
-    this.getApplictionList();
-    console.log(this.data.applicationList);
-    this.data.applicationList.forEach(function(item, index) {
-      console.log(item);
-      if (item.status < 3) {
-        this.setData({
-          hasActiveApplication: true
-        });
-      }
-    });
+
     this.setData({
       statusDesc: app.globalData.statusDesc
     });
+  },
+
+  onShow: function(options) {
+    this.getApplictionList();
   },
 
   /**
@@ -53,6 +48,9 @@ Page({
   getApplictionList: function () {
     var openid = wx.getStorageSync('openid');
     var that = this;
+    this.setData({
+      hasActiveApplication: false
+    });
     wx.cloud.callFunction({
       name: 'quickstartFunctions',
       data: {
@@ -60,9 +58,19 @@ Page({
         openid: openid
       }
     }).then((resp) => {
-      console.log('查询结果', resp);
       that.setData({
         applicationList: resp.result.data
+      });
+      /**
+       * 由于数据加载比较慢，下面代码如果直接放在onload函数中，将会在数据加载前访问applicationList，导致取不到任何数据
+       */
+      that.data.applicationList.forEach(function (item, index) {
+        console.log(item);
+        if (item.status < 3) {
+          that.setData({
+            hasActiveApplication: true
+          });
+        }
       });
     });
   },

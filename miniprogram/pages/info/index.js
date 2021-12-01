@@ -5,8 +5,7 @@ Page({
   /**
    * 页面的初始数据
    */
-  data: {
-  },
+  data: {},
 
   goBack: function () {
     wx.navigateBack({
@@ -14,15 +13,35 @@ Page({
     })
   },
 
-  modApplicationInfo: function (e) {
+  modApplication: function (e) {
     const data = JSON.stringify(this.data.applicationInfo);
     wx.navigateTo({
       url: '/pages/input/index?data=' + data,
     });
   },
 
-  delApplication:function(){
-
+  delApplication: function (e) {
+    var that = this;
+    wx.showModal({
+      title: '确认',
+      content: '删除申请',
+      success(res) {
+        if (res.confirm) {
+          wx.cloud.callFunction({
+            name: 'quickstartFunctions',
+            data: {
+              type: 'deleteApplication',
+              id: that.data.applicationInfo._id
+            }
+          }).then((resp) => {
+            console.log('Delete application:', resp);
+            if (resp.errMsg == 'cloud.callFunction:ok') {
+              wx.navigateBack();
+            }
+          });
+        }
+      }
+    })
   },
 
   onLoad: function (options) {

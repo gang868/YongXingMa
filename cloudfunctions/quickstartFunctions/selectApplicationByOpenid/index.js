@@ -10,5 +10,5 @@ exports.main = async (event, context) => {
   // 返回数据库查询结果
   return await db.collection('application').where({
     openid: event.openid
-  }).get();
+  }).orderBy('status', 'asc').get();
 };
