@@ -1,4 +1,5 @@
 // pages/info/index.js
+const app = getApp()
 Page({
 
   /**
@@ -26,7 +27,8 @@ Page({
 
   onLoad: function (options) {
     this.setData({
-      applicationInfo: JSON.parse(options.data)
+      applicationInfo: JSON.parse(options.data),
+      statusDesc: app.globalData.statusDesc
     });
   },
 

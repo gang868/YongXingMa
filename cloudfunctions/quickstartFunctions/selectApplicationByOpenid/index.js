@@ -9,6 +9,6 @@ const db = cloud.database();
 exports.main = async (event, context) => {
   // 返回数据库查询结果
   return await db.collection('application').where({
-    openId: event.data.openId
-  });
+    openid: event.openid
+  }).get();
 };

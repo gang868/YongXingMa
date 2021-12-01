@@ -1,40 +1,33 @@
 // index.js
+const app = getApp()
+
 Page({
   data: {
     hasActiveApplication: false,
-    applicationInfo: {
-      applicationList: [{
-          _id: 20211128001,
-          openid: 'oNyvz4hb2x7eUUh_6f1j5T0Wls_c',
-          date: '2021年11月28日',
-          status: '已改码',
-          name: '张冠李',
-          idKind: '护照',
-          id: 'NB20171123',
-          contact: '1390574XXXX',
-          address: '双东路195弄50号305室',
-          codeColor: '红码',
-          reason: '其它',
-          rnaReport: '已上传',
-          travel: '已上传'
-        }
-      ]
-    }
+    applicationList: []
   },
 
   onLoad: function (options) {
-    this.data.applicationInfo.applicationList.forEach(element => {
-      if (element.status == '待审核') {
+    this.getOpenId();
+    this.getApplictionList();
+    console.log(this.data.applicationList);
+    this.data.applicationList.forEach(function(item, index) {
+      console.log(item);
+      if (item.status < 3) {
         this.setData({
           hasActiveApplication: true
         });
       }
     });
-    this.getOpenId();
+    this.setData({
+      statusDesc: app.globalData.statusDesc
+    });
   },
 
+  /**
+   * 获取微信用户openid
+   */
   getOpenId: function () {
-    var that = this;
     wx.showLoading({
       title: '读取用户信息',
     });
@@ -44,13 +37,34 @@ Page({
         type: 'getOpenId'
       }
     }).then((resp) => {
-      console.log(resp.result.openid);
-      that.setData({
+      console.log('初次加载获取的openid:', resp.result.openid);
+      this.setData({
         openid: resp.result.openid
       });
       wx.setStorageSync('openid', resp.result.openid)
     });
     wx.hideLoading();
+  },
+
+  /**
+   * 根据用户openid读取用户申请记录
+   * @param {用户openid}} e 
+   */
+  getApplictionList: function () {
+    var openid = wx.getStorageSync('openid');
+    var that = this;
+    wx.cloud.callFunction({
+      name: 'quickstartFunctions',
+      data: {
+        type: 'selectApplicationByOpenid',
+        openid: openid
+      }
+    }).then((resp) => {
+      console.log('查询结果', resp);
+      that.setData({
+        applicationList: resp.result.data
+      });
+    });
   },
 
   getUserInfo: function (e) {
@@ -112,7 +126,7 @@ Page({
   */
   viewApplicationInfo(e) {
     const index = e.currentTarget.dataset.index;
-    const data = JSON.stringify(this.data.applicationInfo.applicationList[index]);
+    const data = JSON.stringify(this.data.applicationList[index]);
     wx.navigateTo({
       url: '/pages/info/index?data=' + data,
     });

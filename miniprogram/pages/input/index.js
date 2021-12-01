@@ -44,11 +44,14 @@ Page({
     } else {
       this.setData({
         applicationInfo: {
-          '_id': 0,
           'openid': wx.getStorageSync('openid'),
           'idKind': '身份证',
           'codeColor': '黄码',
-          'reason': '发热门诊就诊'
+          'reason': '发热门诊就诊',
+          'date': this.getDateStr(),
+          'status': 0,
+          'rnaReport': null,
+          'travel': null
         }
       })
     }
@@ -129,7 +132,34 @@ Page({
   /**
    * 
    */
-  saveAndUpload: function () {
+  saveApplication: function (e) {
+    console.log('save....');
+    wx.showLoading({
+      title: '正在保存申请....',
+    });
+    var that = this;
+    wx.cloud.callFunction({
+      name: 'quickstartFunctions',
+      data: {
+        type: 'createApplication',
+        data: this.data.applicationInfo
+      }
+    }).then((resp) => {
+      if(resp.success) {
+        console.log(res.data);
+      }
+    });
+    wx.hideLoading();
+  },
 
+  getDateStr: function(){
+    var timestamp = Date.parse(new Date());
+    var date = new Date(timestamp);
+    var y = date.getFullYear();
+    var m = date.getMonth() + 1;
+    var ms = m < 10 ? '0' + m: m;
+    var d = date.getDate();
+    var ds = d < 10? '0'+ d: d;
+    return y + '/' + ms + '/' + ds;
   }
 })

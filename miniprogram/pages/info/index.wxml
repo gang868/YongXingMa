@@ -8,7 +8,7 @@
       </view>
       <view class="weui-cell">
         <view class="weui-cell__bd">当前状态</view>
-        <view class="weui-cell__ft">{{applicationInfo.status}}</view>
+        <view class="weui-cell__ft">{{statusDesc[applicationInfo.status]}}</view>
       </view>
       <view class="weui-cell">
         <view class="weui-cell__bd">姓名</view>
@@ -44,8 +44,8 @@
       </view>
     </view>
     <view class="button-sp-area" style="margin-top: 10px;">
-      <view class="weui-btn weui-btn_primary" wx:if="{{applicationInfo.status=='待审核'}}" bindtap="modApplicationInfo">修改</view>
-      <view class="weui-btn weui-btn_warn" wx:if="{{applicationInfo.status=='待审核'}}" bindtap="delApplicationinfo">删除</view>
+      <view class="weui-btn weui-btn_primary" wx:if="{{applicationInfo.status<2}}" bindtap="modApplicationInfo">修改</view>
+      <view class="weui-btn weui-btn_warn" wx:if="{{applicationInfo.status<2}}" bindtap="delApplicationinfo">删除</view>
     </view>
   </view>
 </view>

@@ -77,7 +77,7 @@
       </view>
     </view>
     <view class="weui-form__opr-area">
-      <view class="weui-btn weui-btn_primary" bindtap="saveAndUpload">保 存</view>
+      <view class="weui-btn weui-btn_primary" bindtap="saveApplication">保 存</view>
     </view>
   </view>
 </view>
