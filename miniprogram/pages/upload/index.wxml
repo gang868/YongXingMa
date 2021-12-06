@@ -7,6 +7,24 @@
           <view class="weui-uploader">
             <view class="weui-uploader__hd">
               <view aria-role="option" class="weui-uploader__overview">
+                <view class="weui-uploader__title">已上传材料</view>
+                <view class="weui-uploader__info">{{fileLinks.length}}/3</view>
+              </view>
+            </view>
+            <view class="weui-uploader__bd">
+              <view class="weui-uploader__files" id="uploaderFiles">
+                <block wx:for="{{fileLinks}}" wx:key="*this">
+                  <view class="weui-uploader__file" bindtap="previewImage" id="{{item}}">
+                    <image class="weui-uploader__img" src="{{item}}" mode="aspectFill" />
+                  </view>
+                </block>
+              </view>
+              <view class="weui-uploader__input-box" wx:if="{{fileLinks.length==0}}">
+                <view class="weui-uploader__file"></view>
+              </view>
+            </view>
+            <view class="weui-uploader__hd" style="margin-top: 20px;">
+              <view aria-role="option" class="weui-uploader__overview">
                 <view class="weui-uploader__title">上传改码依据材料照片（截图）</view>
                 <view class="weui-uploader__info">{{files.length}}/3</view>
               </view>
