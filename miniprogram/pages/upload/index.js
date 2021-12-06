@@ -5,7 +5,8 @@ Page({
    * 页面的初始数据
    */
   data: {
-    tempFilePaths: '',
+    files: [],
+    hasImage: false
   },
 
   /**
@@ -13,17 +14,19 @@ Page({
    */
   onLoad: function (options) {
     console.log('upload', options);
-    var kindStr = '核酸检测报告';
-    if(options.kind == 'travel') {
-      kindStr = '通信行程卡'
-    }
     this.setData({
-      uploadKind: options.kind,
-      uploadKindStr: kindStr
+      id: options.id
     })
   },
 
-  chooseimage: function(){
+  clearImages: function(e) {
+    this.setData({
+      files: [],
+      hasImage: false
+    })
+  },
+
+  chooseImage: function(){
     var that = this;
     wx.chooseImage({
       count: 1,
@@ -31,9 +34,17 @@ Page({
       sourceType: ['album', 'camera'],
       success: function(res) {
         that.setData({
-          tempFilePaths:res.tempFilePaths
+          files:that.data.files.concat(res.tempFilePaths),
+          hasImage: true
         });
       }
+    })
+  },
+
+  previewImage: function(e) {
+    wx.previewImage({
+      current: e.currentTarget.id,
+      urls: this.data.files,
     })
   }
 })

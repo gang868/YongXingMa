@@ -1,14 +1,38 @@
 <!--pages/upload/index.wxml-->
 <view class="page">
-  <view class="my-form">
-    <view class="weui-form__text-area">
-      <h3 class="weui-form__title">上传{{uploadKindStr}}</h3>
-    </view>
-    <view class="weui-form__control-area" style="margin-top: 10px;background-color: white;">
-      <view class="weui-cells__group weui-cells__group_form">
-        <button bindtap="chooseimage">选择图片</button>
-        <image src="{{tempFilePaths}}" mode="aspectFill"></image>
+  <view class="page__bd">
+    <view class="weui-cells">
+      <view class="weui-cell weui-cell_uploader">
+        <view class="weui-cell__bd">
+          <view class="weui-uploader">
+            <view class="weui-uploader__hd">
+              <view aria-role="option" class="weui-uploader__overview">
+                <view class="weui-uploader__title">上传改码依据材料照片（截图）</view>
+                <view class="weui-uploader__info">{{files.length}}/3</view>
+              </view>
+              <view class="weui-uploader__tips">
+                请先选择好所有待上传图片，然后上传图片（核酸检测报告1-2张，通信行程卡1张），最多3张图片
+              </view>
+            </view>
+            <view class="weui-uploader__bd">
+              <view class="weui-uploader__files" id="uploaderFiles">
+                <block wx:for="{{files}}" wx:key="*this">
+                  <view class="weui-uploader__file" bindtap="previewImage" id="{{item}}">
+                    <image class="weui-uploader__img" src="{{item}}" mode="aspectFill" />
+                  </view>
+                </block>
+              </view>
+              <view class="weui-uploader__input-box" wx:if="{{files.length<3}}">
+                <view aria-role="button" aria-label="上传" class="weui-uploader__input" bindtap="chooseImage"></view>
+              </view>
+            </view>
+          </view>
+        </view>
       </view>
+    </view>
+    <view class="button-sp-area" style="margin-top: 10px;" wx:if="{{hasImage}}">
+      <view class="weui-btn weui-btn_primary" bindtap="uploadImages">上传图片</view>
+      <view class="weui-btn weui-btn_default" bindtap="clearImages">重新选择</view>
     </view>
   </view>
 </view>

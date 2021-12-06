@@ -20,6 +20,12 @@ Page({
     });
   },
 
+  modEvidence: function(e) {
+    wx.navigateTo({
+      url: '/pages/upload/index?id='+this.data.applicationInfo._id,
+    })
+  },
+
   delApplication: function (e) {
     var that = this;
     wx.showModal({

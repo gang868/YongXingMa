@@ -76,8 +76,11 @@
         </view>
       </view>
     </view>
-    <view class="weui-form__opr-area">
-      <view class="weui-btn weui-btn_primary" bindtap="saveApplication">保 存</view>
+    <view class="weui-form__opr-area" style="margin-top: 10px;">
+      <view class="weui-btn weui-btn_primary" bindtap="saveApplication" data-upload="true">
+        <block wx:if="{{!saved}}">保存并</block>上传资料
+      </view>
+      <view class="weui-btn weui-btn_primary" bindtap="saveApplication" data-upload="false" wx:if="{{status>0}}">保存</view>
     </view>
   </view>
 </view>

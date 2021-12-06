@@ -5,6 +5,7 @@ Page({
    * 页面的初始数据
    */
   data: {
+    saved: false,
     idIndex: 0,
     idKindList: ['身份证', '护照'],
     idInputType: 'idcard',
@@ -133,45 +134,63 @@ Page({
    * 
    */
   saveApplication: function (e) {
+    let needUpload = e.currentTarget.dataset.upload;
+    console.log(needUpload);
     var that = this;
     wx.showLoading({
       title: '正在保存申请....',
     });
-    
-    if (this.data.applicationInfo._id) {
-      wx.cloud.callFunction({
-        name: 'quickstartFunctions',
-        data: {
-          type: 'updateApplication',
-          id: this.data.applicationInfo._id,
-          data: {
-            address: this.data.applicationInfo.address,
-            codeColor: this.data.applicationInfo.codeColor,
-            contact: this.data.applicationInfo.contact,
-            date: this.getDateStr(),
-            id: this.data.applicationInfo.id,
-            idKind: this.data.applicationInfo.idKind,
-            name: this.data.applicationInfo.name,
-            reason: this.data.applicationInfo.reason
-          }
-        }
-      }).then((resp) => {
-        wx.navigateTo({
-          url: '/pages/upload/index?kind=rnaReport',
-        })
+    if (this.data.saved) {
+      wx.navigateTo({
+        url: '/pages/upload/index?id=' + this.data.applicationInfo._id,
       });
     } else {
-      wx.cloud.callFunction({
-        name: 'quickstartFunctions',
-        data: {
-          type: 'createApplication',
-          data: this.data.applicationInfo
-        }
-      }).then((resp) => {
-        wx.navigateTo({
-          url: '/pages/upload/index?kind=rnaReport',
-        })
-      });
+      if (this.data.applicationInfo._id) {
+        wx.cloud.callFunction({
+          name: 'quickstartFunctions',
+          data: {
+            type: 'updateApplication',
+            id: this.data.applicationInfo._id,
+            data: {
+              address: this.data.applicationInfo.address,
+              codeColor: this.data.applicationInfo.codeColor,
+              contact: this.data.applicationInfo.contact,
+              date: this.getDateStr(),
+              id: this.data.applicationInfo.id,
+              idKind: this.data.applicationInfo.idKind,
+              name: this.data.applicationInfo.name,
+              reason: this.data.applicationInfo.reason
+            }
+          }
+        }).then((resp) => {
+          that.setData({
+            saved: true
+          });
+          if (needUpload) {
+            wx.navigateTo({
+              url: '/pages/upload/index?id=' + this.data.applicationInfo._id,
+            })
+          }
+        });
+      } else {
+        wx.cloud.callFunction({
+          name: 'quickstartFunctions',
+          data: {
+            type: 'createApplication',
+            data: this.data.applicationInfo
+          }
+        }).then((resp) => {
+          that.setData({
+            saved: true,
+            'applicationInfo._id': resp.result._id
+          });
+          if (needUpload) {
+            wx.navigateTo({
+              url: '/pages/upload/index?id=' + resp.result._id,
+            })
+          }
+        });
+      }
     }
     wx.hideLoading();
   },
