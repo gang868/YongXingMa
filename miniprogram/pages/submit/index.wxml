@@ -1,0 +1,12 @@
+<!--pages/submit/index.wxml-->
+<!--index.wxml-->
+<scroll-view class="page" scroll-y="true" show-scrollbar="false">
+  <view class="weui-form">
+    <view class="weui-form__text-area">
+      <h2 class="weui-form__title">确认提交申请</h2>
+    </view>
+    <view class="weui-form__control-area">
+      
+    </view>
+  </view>
+</scroll-view>

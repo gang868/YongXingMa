@@ -7,7 +7,7 @@
           <view class="weui-uploader">
             <view class="weui-uploader__hd">
               <view aria-role="option" class="weui-uploader__overview">
-                <view class="weui-uploader__title">已上传材料</view>
+                <view class="weui-uploader__title">已上传图片</view>
                 <view class="weui-uploader__info">{{fileLinks.length}}/3</view>
               </view>
             </view>
@@ -29,7 +29,7 @@
                 <view class="weui-uploader__info">{{files.length}}/3</view>
               </view>
               <view class="weui-uploader__tips">
-                请先选择好所有待上传图片，然后上传图片（核酸检测报告1-2张，通信行程卡1张），最多3张图片
+                请先选择好所有待上传图片，然后上传图片（核酸检测报告1-2张，通信行程卡1张），至少2张最多3张图片。每次上传会依次清空原来图片。
               </view>
             </view>
             <view class="weui-uploader__bd">
@@ -48,15 +48,17 @@
         </view>
       </view>
     </view>
+    <!--
     <label class="weui-cell weui-cell_switch">
-      <view class="weui-cell__bd">重新上传</view>
+      <view class="weui-cell__bd">清除已上传图片</view>
       <view class="weui-cell__ft">
         <view class="weui-switch-cp">
-          <checkbox class="weui-switch-cp__input" checked="true" />
+          <switch class="weui-switch-cp__input" checked="{{resetMaterials}}" bindchange="setUploadMode" />
           <view class="weui-switch-cp__box"></view>
         </view>
       </view>
     </label>
+    -->
     <view class="button-sp-area" style="margin-top: 10px;" wx:if="{{hasImage}}">
       <view class="weui-btn weui-btn_primary" bindtap="uploadImages">上传图片</view>
       <view class="weui-btn weui-btn_default" bindtap="clearImages">重新选择</view>

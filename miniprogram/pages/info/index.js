@@ -5,7 +5,9 @@ Page({
   /**
    * 页面的初始数据
    */
-  data: {},
+  data: {
+    fileLinks: []
+  },
 
   goBack: function () {
     wx.navigateBack({
@@ -20,10 +22,10 @@ Page({
     });
   },
 
-  modMaterials: function(e) {
+  modMaterials: function (e) {
     const data = JSON.stringify(this.data.applicationInfo)
     wx.navigateTo({
-      url: '/pages/upload/index?data='+data,
+      url: '/pages/upload/index?data=' + data,
     })
   },
 
@@ -41,7 +43,9 @@ Page({
               id: that.data.applicationInfo._id
             }
           }).then((resp) => {
-            console.log('Delete application:', resp);
+            wx.cloud.deleteFile({
+              fileList: that.data.applicationInfo.materials
+            });
             if (resp.errMsg == 'cloud.callFunction:ok') {
               wx.navigateBack();
             }
@@ -56,6 +60,29 @@ Page({
       applicationInfo: JSON.parse(options.data),
       statusDesc: app.globalData.statusDesc
     });
+
+    var that = this;
+    wx.cloud.getTempFileURL({
+      fileList: that.data.applicationInfo.materials,
+      success: res => {
+        res.fileList.forEach(item => {
+          that.setData({
+            fileLinks: that.data.fileLinks.concat(item.tempFileURL)
+          });
+        });
+      }
+    });
+  },
+
+  /**
+   * 点击放大察看图片
+   * @param {*} e 
+   */
+  previewImage: function (e) {
+    wx.previewImage({
+      current: e.currentTarget.id,
+      urls: this.data.fileLinks
+    })
   },
 
   /**
