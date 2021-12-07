@@ -6,7 +6,6 @@ Page({
    */
   data: {
     files: [],
-    fileIds: [],
     fileLinks: [],
     hasImage: false
   },
@@ -15,9 +14,8 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    console.log('upload', options);
     this.setData({
-      id: options.id
+      applicationInfo: JSON.parse(options.data),
     })
   },
 
@@ -58,7 +56,7 @@ Page({
       successCount = 0;
     var that = this;
     this.setData({
-      fileIds: []
+      'applicationInfo.materials': []
     });
     this.data.files.forEach(img => {
       /**获取扩展名（不转换成小写云端居然不能预览） */
@@ -68,7 +66,7 @@ Page({
         filePath: img,
         success: res => {
           that.setData({
-            fileIds: that.data.fileIds.concat(res.fileID)
+            'applicationInfo.materials': that.data.applicationInfo.materials.concat(res.fileID)
           });
           wx.cloud.getTempFileURL({
             fileList: [res.fileID],
@@ -83,9 +81,9 @@ Page({
       i++;
     });
     wx.hideLoading();
-    console.log(this.data.fileIds);
+    console.log(this.data.applicationInfo.materials);
     wx.cloud.getTempFileURL({
-      fileList: this.data.fileIds,
+      fileList: this.data.applicationInfo.materials,
       success: res => {
         console.log(res);
       }

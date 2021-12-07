@@ -13,8 +13,7 @@ Page({
     codeColorList: ['黄码', '红码'],
     reasonIndex: 0,
     reasonList: ['发热门诊就诊', '其它'],
-    rnaReportSrc: "../../images/picture_light.png",
-    travleSrc: "../../images/picture_light.png",
+    materials: []
   },
 
   /**
@@ -51,8 +50,7 @@ Page({
           'reason': '发热门诊就诊',
           'date': this.getDateStr(),
           'status': 0,
-          'rnaReport': null,
-          'travel': null
+          'materials': [],
         }
       })
     }
@@ -167,8 +165,9 @@ Page({
             saved: true
           });
           if (needUpload) {
+            const data = JSON.stringify(this.data.applicationInfo)
             wx.navigateTo({
-              url: '/pages/upload/index?id=' + this.data.applicationInfo._id,
+              url: '/pages/upload/index?data=' + data,
             })
           }
         });

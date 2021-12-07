@@ -19,8 +19,8 @@
                   </view>
                 </block>
               </view>
-              <view class="weui-uploader__input-box" wx:if="{{fileLinks.length==0}}">
-                <view class="weui-uploader__file"></view>
+              <view class="weui-uploader__file" wx:if="{{fileLinks.length==0}}">
+                <image class="weui-uploader__img" src="../../images/pic.png" mode="aspectFill" />
               </view>
             </view>
             <view class="weui-uploader__hd" style="margin-top: 20px;">
@@ -48,6 +48,15 @@
         </view>
       </view>
     </view>
+    <label class="weui-cell weui-cell_switch">
+      <view class="weui-cell__bd">重新上传</view>
+      <view class="weui-cell__ft">
+        <view class="weui-switch-cp">
+          <checkbox class="weui-switch-cp__input" checked="true" />
+          <view class="weui-switch-cp__box"></view>
+        </view>
+      </view>
+    </label>
     <view class="button-sp-area" style="margin-top: 10px;" wx:if="{{hasImage}}">
       <view class="weui-btn weui-btn_primary" bindtap="uploadImages">上传图片</view>
       <view class="weui-btn weui-btn_default" bindtap="clearImages">重新选择</view>

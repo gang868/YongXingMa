@@ -21,5 +21,7 @@ exports.main = async (event, context) => {
       return await updateApplication.main(event, context);
     case 'deleteApplication':
       return await deleteApplication.main(event, context);
+    case 'selectApplicationById':
+      return await selectApplicationById.main(event, context);
   }
 };

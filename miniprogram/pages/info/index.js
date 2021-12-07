@@ -20,9 +20,10 @@ Page({
     });
   },
 
-  modEvidence: function(e) {
+  modMaterials: function(e) {
+    const data = JSON.stringify(this.data.applicationInfo)
     wx.navigateTo({
-      url: '/pages/upload/index?id='+this.data.applicationInfo._id,
+      url: '/pages/upload/index?data='+data,
     })
   },
 
