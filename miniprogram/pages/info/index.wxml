@@ -49,12 +49,13 @@
       </view>
     </view>
     <view class="button-sp-area" style="margin-top: 10px;">
-      <view class="weui-btn weui-btn_primary" wx:if="{{applicationInfo.status==1}}" bindtap="submitApplication">提交改码</view>
+      <view class="weui-btn weui-btn_primary" wx:if="{{applicationInfo.status==1}}" bindtap="submitApplication">提交申请</view>
       <view class="weui-btn weui-btn_primary" wx:if="{{applicationInfo.status<2}}" bindtap="modApplication">修改</view>
       <view class="weui-btn weui-btn_primary" wx:if="{{applicationInfo.status<2}}" bindtap="modMaterials">
         <block wx:if="{{applicationInfo.status==1}}">重新</block>上传材料
       </view>
       <view class="weui-btn weui-btn_warn" wx:if="{{applicationInfo.status<2}}" bindtap="delApplication">删除</view>
+      <view class="weui-btn weui-btn_warn" wx:if="{{applicationInfo.status==2}}" bindtap="recallApplication">撤回申请</view>
     </view>
   </view>
 </view>

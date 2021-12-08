@@ -15,7 +15,7 @@
               <view class="weui-uploader__files" id="uploaderFiles">
                 <block wx:for="{{fileLinks}}" wx:key="*this">
                   <view class="weui-uploader__file" bindtap="previewImage" id="{{item}}">
-                    <image class="weui-uploader__img" src="{{item}}" mode="aspectFill" />
+                    <image class="weui-uploader__img" src="{{item.tempFileURL}}" mode="aspectFill" />
                   </view>
                 </block>
               </view>
@@ -59,9 +59,10 @@
       </view>
     </label>
     -->
-    <view class="button-sp-area" style="margin-top: 10px;" wx:if="{{hasImage}}">
-      <view class="weui-btn weui-btn_primary" bindtap="uploadImages">上传图片</view>
-      <view class="weui-btn weui-btn_default" bindtap="clearImages">重新选择</view>
+    <view class="button-sp-area" style="margin-top: 10px;">
+      <view class="weui-btn weui-btn_primary" bindtap="uploadImages" wx:if="{{hasImage}}">上传图片</view>
+      <view class="weui-btn weui-btn_default" bindtap="clearImages"  wx:if="{{hasImage}}">重新选择</view>
+      <view class="weui-btn weui-btn_primary" bindtap="submitApplication"  wx:if="{{applicationInfo.materials.length > 1}}">提交申请</view>
     </view>
   </view>
 </view>

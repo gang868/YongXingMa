@@ -1,12 +1,30 @@
 <!--pages/submit/index.wxml-->
 <!--index.wxml-->
 <scroll-view class="page" scroll-y="true" show-scrollbar="false">
-  <view class="weui-form">
-    <view class="weui-form__text-area">
-      <h2 class="weui-form__title">确认提交申请</h2>
+  <view class="page__bd">
+    <view class="weui-article">
+      <view class="weui-article__h1" style="text-align: center;">申请须知</view>
+      <view class="weui-article__section">
+        <view class="weui-article__h2">一、可以纠码的情形</view>
+        <view class="weui-article__p">
+          因发热门诊就诊、系统错误等原因甬行码变红黄码，提供3天以内的核酸检测报告和通信行程卡（绿码），可以纠码；
+        </view>
+        <view class="weui-article__h2">二、无法纠码的情形</view>
+        <view class="weui-article__p">
+          支付宝健康码变码，系统没有提供纠码功能；重点地区来甬人员、密接人员等，系统禁止纠码；
+        </view>
+        <view class="weui-article__h2">三、法律责任</view>
+        <view class="weui-article__p">
+          请如实提供核酸检测报告、通信行程卡，不得采取伪造、替代等手段提供虚假证明，否则相关法律责任和后果自负。
+        </view>
+        <view class="weui-article__h2">四、关于小程序</view>
+        <view class="weui-article__p" style="margin-bottom: 5px;">
+          仅限江北区文教街道居民申请纠码，辖区之外概不受理。
+        </view>
+      </view>
     </view>
-    <view class="weui-form__control-area">
-      
+    <view class="button-sp-area" style="margin-top: 0px;">
+      <view class="weui-btn weui-btn_primary" bindtap="submitApplication" disabled="{{canSubmit}}">提交申请</view>
     </view>
   </view>
 </scroll-view>

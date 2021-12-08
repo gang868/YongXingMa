@@ -194,6 +194,12 @@ Page({
     wx.hideLoading();
   },
 
+  goBack: function () {
+    wx.navigateBack({
+      delta: 0,
+    })
+  },
+
   getDateStr: function () {
     var timestamp = Date.parse(new Date());
     var date = new Date(timestamp);

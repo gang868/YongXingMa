@@ -84,61 +84,99 @@ Page({
    * 点击上传图片事件
    */
   uploadImages: function () {
-    wx.showLoading({
-      title: '正在上传资料....',
-    });
     var i = 1;
     var that = this;
+    // 清除云端文件
     wx.cloud.deleteFile({
       fileList: that.data.applicationInfo.materials
     });
+    // 重置客户端变量
     this.setData({
       'applicationInfo.materials': [],
       fileLinks: []
     });
-    this.data.files.forEach(img => {
-      /**获取扩展名（不转换成小写云端居然不能预览） */
+
+    /**
+     * 递归调用解决文件列表依次上传问题
+     * @param {图片数组}} img_array 
+     */
+    function uploadImagesOneByOne(img_array, index) {
+      // 提取文件数组第一个文件
+      var img = img_array[0];
+      // 获取第一个文件扩展名
       var ext = img.substring(img.lastIndexOf('.')).toLowerCase();
-      wx.cloud.uploadFile({
-        cloudPath: this.data.applicationInfo._id + '_' + String(i) + ext,
-        filePath: img,
-        success: res => {
-          console.log('res.fileId', res.fileID);
-          that.setData({
-            'applicationInfo.materials': that.data.applicationInfo.materials.concat(res.fileID)
-          });
-
-          wx.cloud.callFunction({
-            name: 'quickstartFunctions',
-            data: {
-              type: 'updateApplication',
-              id: that.data.applicationInfo._id,
-              data: {
-                status: 1,
-                materials: that.data.applicationInfo.materials
-              }
-            }
-          });
-
-          wx.cloud.getTempFileURL({
-            fileList: [res.fileID],
-            success: res => {
-              console.log('res.fileList', res.fileList);
-              that.setData({
-                fileLinks: that.data.fileLinks.concat(res.fileList[0].tempFileURL)
-              });
-            }
-          });
-
-          that.setData({
-            files: []
-          });
-        }
+      wx.showLoading({
+        title: '正在上传第' + index + '张图片...',
       });
-      i++;
-    });
+      // 如果数组剩余个数为1，完成最后一个图片上传后，更新云端数据库记录，获取云端图片访问链接
+      var cloudFilename = that.data.applicationInfo._id + '_' + String(index) + ext;
+      if (img_array.length == 1) {
+        wx.cloud.uploadFile({
+          cloudPath: cloudFilename,
+          filePath: img,
+          success: res => {
+            wx.hideLoading();
+            // 图片上传成功后操作
+            that.setData({
+              'applicationInfo.materials': that.data.applicationInfo.materials.concat(res.fileID)
+            });
+            // 更新云端数据库记录
+            wx.cloud.callFunction({
+              name: 'quickstartFunctions',
+              data: {
+                type: 'updateApplication',
+                id: that.data.applicationInfo._id,
+                data: {
+                  status: 1,
+                  materials: that.data.applicationInfo.materials
+                }
+              }
+            });
+            // 获取云端图片访问链接
+            wx.cloud.getTempFileURL({
+              fileList: that.data.applicationInfo.materials,
+              success: res => {
+                that.setData({
+                  fileLinks: res.fileList
+                });
+              }
+            });
+            // 清空上传列表
+            that.setData({
+              files: []
+            });
+          }
+        });
+      } else {
+        // 去除第一个图的切片操作
+        var new_array = img_array.slice(1, img_array.length);
+        // 上传第一个图片
+        wx.cloud.uploadFile({
+          cloudPath: cloudFilename,
+          filePath: img,
+          success: res => {
+            // 图片上传成功后操作
+            that.setData({
+              'applicationInfo.materials': that.data.applicationInfo.materials.concat(res.fileID)
+            });
+            // 上传成功后，将切除第一个图片的剩余数组递归调用上传
+            wx.hideLoading();
+            uploadImagesOneByOne(new_array, index + 1);
+          }
+        });
+      }
+    }
+
+    uploadImagesOneByOne(this.data.files, 1);
 
     wx.hideLoading();
+  },
+
+  submitApplication: function () {
+    const data = JSON.stringify(this.data.applicationInfo);
+    wx.navigateTo({
+      url: '/pages/submit/index?data=' + data,
+    });
   },
 
   /**

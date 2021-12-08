@@ -3,26 +3,32 @@ const app = getApp()
 
 Page({
   data: {
+    hasGotUserData: false,
     hasActiveApplication: true,
     applicationList: []
   },
 
   onLoad: function (options) {
+    // 获取用户openid，这是确认不同用户的依据
     this.getOpenId();
-
+    // 五种状态的文字描述
     this.setData({
       statusDesc: app.globalData.statusDesc
     });
   },
 
   onShow: function (options) {
-    this.getApplictionList();
+    this.setData({
+      hasGotUserData: false
+    });
+    this.getApplictionList(this.data.openid);
   },
 
   /**
    * 获取微信用户openid
    */
   getOpenId: function () {
+    var that = this;
     wx.showLoading({
       title: '读取用户信息',
     });
@@ -32,11 +38,10 @@ Page({
         type: 'getOpenId'
       }
     }).then((resp) => {
-      console.log('初次加载获取的openid:', resp.result.openid);
+      that.getApplictionList(resp.result.openid);
       this.setData({
         openid: resp.result.openid
       });
-      wx.setStorageSync('openid', resp.result.openid)
     });
     wx.hideLoading();
   },
@@ -45,8 +50,7 @@ Page({
    * 根据用户openid读取用户申请记录
    * @param {用户openid}} e 
    */
-  getApplictionList: function () {
-    var openid = wx.getStorageSync('openid');
+  getApplictionList: function (openid) {
     var that = this;
     this.setData({
       hasActiveApplication: false
@@ -58,15 +62,17 @@ Page({
         openid: openid
       }
     }).then((resp) => {
+      // 原先代码在获取openid后，再加载用户的申请记录，但是在申请记录读取成功之前，hasActiveApplication为false，就会显示新申请的功能
+      // 导致在现有申请未完结的情况下，用户可以再开启另一个申请，hasGotUserData这个变量保证在用户数据未完全获取之前，不显示操作功能
       that.setData({
-        applicationList: resp.result.data
+        applicationList: resp.result.data,
+        hasGotUserData: true
       });
       /**
        * 由于数据加载比较慢，下面代码如果直接放在onload函数中，将会在数据加载前访问applicationList，导致取不到任何数据
        */
       that.data.applicationList.forEach(function (item, index) {
-        console.log(item);
-        if (item.status < 2) {
+        if (item.status <= 2) {
           that.setData({
             hasActiveApplication: true
           });

@@ -15,6 +15,13 @@ Page({
     })
   },
 
+  submitApplication: function () {
+    const data = JSON.stringify(this.data.applicationInfo);
+    wx.navigateTo({
+      url: '/pages/submit/index?data=' + data,
+    });
+  },
+
   modApplication: function (e) {
     const data = JSON.stringify(this.data.applicationInfo);
     wx.navigateTo({
@@ -33,7 +40,7 @@ Page({
     var that = this;
     wx.showModal({
       title: '确认',
-      content: '删除申请',
+      content: '删除申请？',
       success(res) {
         if (res.confirm) {
           wx.cloud.callFunction({
@@ -83,6 +90,32 @@ Page({
       current: e.currentTarget.id,
       urls: this.data.fileLinks
     })
+  },
+
+  recallApplication: function () {
+    var that = this;
+    wx.showModal({
+      title: '确认',
+      content: '撤回申请？',
+      success(res) {
+        if (res.confirm) {
+          wx.cloud.callFunction({
+            name: 'quickstartFunctions',
+            data: {
+              type: 'updateApplication',
+              id: that.data.applicationInfo._id,
+              data: {
+                status: 1
+              }
+            },
+          }).then((resp) => {
+            that.setData({
+              'applicationInfo.status': 1
+            });
+          });
+        }
+      }
+    });
   },
 
   /**

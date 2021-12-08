@@ -5,14 +5,43 @@ Page({
    * 页面的初始数据
    */
   data: {
-
+    canSubmit: false
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    this.setData({
+      applicationInfo: JSON.parse(options.data)
+    });
 
+    if (this.onAddToFavorites.applicationInfo.status == 1) {
+      this.setData({
+        canSubmit: true
+      });
+    }
+  },
+
+  submitApplication: function () {
+    var that = this;
+    wx.cloud.callFunction({
+      name: 'quickstartFunctions',
+      data: {
+        type: 'updateApplication',
+        id: that.data.applicationInfo._id,
+        data: {
+          status: 2
+        }
+      },
+    }).then((resp) => {
+      that.setData({
+        canSubmit: false
+      });
+      wx.navigateTo({
+        url: '/pages/index/index',
+      });
+    });
   },
 
   /**

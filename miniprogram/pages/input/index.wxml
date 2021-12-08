@@ -81,6 +81,7 @@
         <block wx:if="{{!saved}}">保存并</block>上传资料
       </view>
       <view class="weui-btn weui-btn_primary" bindtap="saveApplication" data-upload="false" wx:if="{{status>0}}">保存</view>
+      <view class="weui-btn weui-btn_warn" bindtap="goBack">取消</view>
     </view>
   </view>
 </view>
