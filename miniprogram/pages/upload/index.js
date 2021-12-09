@@ -6,7 +6,6 @@ Page({
    */
   data: {
     files: [],
-    fileLinks: [],
     hasImage: false,
     uploading: false,
     resetMaterials: true // 是否取代原图片 
@@ -18,21 +17,7 @@ Page({
   onLoad: function (options) {
     // 从url传递的数据中解析出申请信息
     this.setData({
-      applicationInfo: JSON.parse(options.data),
-    });
-
-    var that = this;
-    wx.cloud.getTempFileURL({
-      fileList: that.data.applicationInfo.materials,
-      success: res => {
-        res.fileList.forEach(item => {
-          if (item.status == 0) {
-            that.setData({
-              fileLinks: that.data.fileLinks.concat(item.tempFileURL)
-            });
-          }
-        });
-      }
+      applicationInfo: wx.getStorageSync('applicationInfo'),
     });
   },
 
@@ -85,6 +70,37 @@ Page({
     })
   },
 
+  getuuid: function (len, radix) {
+    var chars = '0123456789ABCDEFGHIJKMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'.split('');
+    var uuid = [];
+    var i = 0;
+    radix = radix || chars.length
+    if (len) {
+      for (i = 0; i < len; i++) {
+        uuid[i] = chars[0 | Math.random() * radix]
+      }
+    } else {
+      var r;
+      uuid[8] = uuid[13] = uuid[18] = uuid[23] = '-'
+      uuid[14] = '4'
+      for (i = 0; i < 36; i++) {
+        if (!uuid[i]) {
+          r = 0 | Math.random() * 16;
+          uuid[i] = chars[(i == 19) ? (r & 0x3) | 0x8 : r]
+        }
+      }
+    }
+    return uuid.join('');
+  },
+
+  getTimeId: function (len, radix) {
+    if (len) {
+      const time = new Date().getTime();
+      const uuid = this.getuuid(len, radix);
+      return `${time}${uuid}`
+    }
+  },
+
   /**
    * 点击上传图片事件
    */
@@ -117,7 +133,8 @@ Page({
         title: '正在上传第' + i + '张图片...',
       });
       // 如果数组剩余个数为1，完成最后一个图片上传后，更新云端数据库记录，获取云端图片访问链接
-      var cloudFilename = that.data.applicationInfo._id + '_' + String(i) + ext;
+      var cloudFilename = that.getTimeId(8, 12) + ext;
+      console.log(cloudFilename);
       if (img_array.length == 1) {
         wx.cloud.uploadFile({
           cloudPath: cloudFilename,
@@ -142,22 +159,7 @@ Page({
                 }
               }
             });
-            // 获取云端图片访问链接
-            wx.cloud.getTempFileURL({
-              fileList: that.data.applicationInfo.materials,
-              success: res => {
-                var fls = [];
-                res.fileList.forEach(file => {
-                  if (file.status == 0) {
-                    fls = fls.concat(file.tempFileURL);
-                  }
-                });
-
-                that.setData({
-                  fileLinks: fls
-                });
-              }
-            });
+            wx.setStorageSync('applicationInfo', that.data.applicationInfo);
             // 清空上传列表
             that.setData({
               files: [],

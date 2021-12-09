@@ -3,9 +3,9 @@ const app = getApp()
 
 Page({
   data: {
-    hasGotUserData: false,
-    hasActiveApplication: true,
-    applicationList: []
+    hasGotUserData: false, // 是否已经获取用户申请数据
+    hasActiveApplication: true, // 是否存在活动申请
+    applicationList: [] // 用户所有申请列表
   },
 
   onLoad: function (options) {
@@ -18,9 +18,11 @@ Page({
   },
 
   onShow: function (options) {
+    // 页面重新显示时，将用户数据获取标志重置
     this.setData({
       hasGotUserData: false
     });
+    // 重新获取申请列表
     if (this.data.openid) {
       this.getApplictionList(this.data.openid);
     }
@@ -84,6 +86,10 @@ Page({
     });
   },
 
+  /**
+   * 获取用户信息，但小程序目前不登记用户信息，该函数并未使用
+   * @param {*} e 
+   */
   getUserInfo: function (e) {
     const that = this;
     wx.getUserProfile({
@@ -97,21 +103,51 @@ Page({
       }
     })
   },
-  /*
-  查看被选中申请的信息
-  */
+
+  /**
+   * 查看被选中申请的信息
+   * @param {*} e 
+   */
   viewApplicationInfo(e) {
     const index = e.currentTarget.dataset.index;
-    const data = JSON.stringify(this.data.applicationList[index]);
+    var applictionInfo = this.data.applicationList[index];
+    wx.setStorageSync('applicationInfo', applictionInfo);
+    const data = JSON.stringify(applictionInfo);
     wx.navigateTo({
-      url: '/pages/info/index?data=' + data,
+      url: '/pages/info/index'
     });
   },
 
+  /**
+   * 发起一个新的申请，初始化一个空白申请后直接进入输入页面
+   */
   apply: function () {
+    wx.setStorageSync('applicationInfo', {
+      'openid': wx.getStorageSync('openid'),
+      'idKind': '身份证',
+      'codeColor': '黄码',
+      'reason': '发热门诊就诊',
+      'date': this.getDateStr(),
+      'status': 0,
+      'materials': [],
+    });
     wx.navigateTo({
       url: '/pages/input/index',
     })
+  },
+
+  /**
+   * 获取指定格式的日期字符串
+   */
+  getDateStr: function () {
+    var timestamp = Date.parse(new Date());
+    var date = new Date(timestamp);
+    var y = date.getFullYear();
+    var m = date.getMonth() + 1;
+    var ms = m < 10 ? '0' + m : m;
+    var d = date.getDate();
+    var ds = d < 10 ? '0' + d : d;
+    return y + '/' + ms + '/' + ds;
   },
 
   onPullDownRefresh: function (e) {

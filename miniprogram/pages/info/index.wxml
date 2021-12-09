@@ -36,24 +36,24 @@
       </view>
       <view class="weui-cell">
         <view class="weui-cell__bd">证据材料</view>
-        <view class="weui-cell__ft">{{fileLinks.length}}/3</view>
+        <view class="weui-cell__ft">{{applicationInfo.materials.length}}/3</view>
       </view>
     </view>
     <view class="weui-uploader__bd">
       <view class="weui-uploader__files" id="uploaderFiles">
-        <block wx:for="{{fileLinks}}" wx:key="*this">
-          <view class="weui-uploader__file" bindtap="previewImage"  data-src="{{item}}" data-list="{{fileLinks}}">
+        <block wx:for="{{applicationInfo.materials}}" wx:key="*this">
+          <view class="weui-uploader__file" bindtap="previewImage"  data-src="{{item}}" data-list="{{applicationInfo.materials}}">
             <image class="weui-uploader__img" src="{{item}}" mode="aspectFill" />
           </view>
         </block>
       </view>
     </view>
-    <view class="button-sp-area" style="margin-top: 10px;">
+    <view class="button-sp-area" style="margin-top: 20px;">
       <view class="weui-btn weui-btn_primary" wx:if="{{applicationInfo.status==1}}" bindtap="submitApplication">提交申请</view>
-      <view class="weui-btn weui-btn_primary" wx:if="{{applicationInfo.status<2}}" bindtap="modApplication">修改</view>
       <view class="weui-btn weui-btn_primary" wx:if="{{applicationInfo.status<2}}" bindtap="modMaterials">
         <block wx:if="{{applicationInfo.status==1}}">重新</block>上传材料
       </view>
+      <view class="weui-btn weui-btn_default" wx:if="{{applicationInfo.status<2}}" bindtap="modApplication">修改</view>
       <view class="weui-btn weui-btn_warn" wx:if="{{applicationInfo.status<2}}" bindtap="delApplication">删除</view>
       <view class="weui-btn weui-btn_warn" wx:if="{{applicationInfo.status==2}}" bindtap="recallApplication">撤回申请</view>
     </view>

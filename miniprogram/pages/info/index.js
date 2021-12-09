@@ -15,28 +15,37 @@ Page({
     })
   },
 
+  /**
+   * 提交申请
+   */
   submitApplication: function () {
-    const data = JSON.stringify(this.data.applicationInfo);
     wx.navigateTo({
-      url: '/pages/submit/index?data=' + data,
+      url: '/pages/submit/index'
     });
   },
 
-  modApplication: function (e) {
-    const data = JSON.stringify(this.data.applicationInfo);
+  /**
+   * 修改申请基本信息
+   */
+  modApplication: function () {
     wx.navigateTo({
-      url: '/pages/input/index?data=' + data,
+      url: '/pages/input/index'
     });
   },
 
-  modMaterials: function (e) {
-    const data = JSON.stringify(this.data.applicationInfo)
+  /**
+   * 上传资料
+   */
+  modMaterials: function () {
     wx.navigateTo({
-      url: '/pages/upload/index?data=' + data,
+      url: '/pages/upload/index'
     })
   },
 
-  delApplication: function (e) {
+  /**
+   * 删除申请
+   */
+  delApplication: function () {
     var that = this;
     wx.showModal({
       title: '确认',
@@ -54,7 +63,10 @@ Page({
               fileList: that.data.applicationInfo.materials
             });
             if (resp.errMsg == 'cloud.callFunction:ok') {
-              wx.navigateBack();
+              wx.removeStorageSync('applicationInfo');
+              wx.redirectTo({
+                url: '/pages/index/index'
+              });
             }
           });
         }
@@ -62,27 +74,10 @@ Page({
     })
   },
 
-  onLoad: function (options) {
+  onShow: function (options) {
     this.setData({
-      applicationInfo: JSON.parse(options.data),
+      applicationInfo: wx.getStorageSync('applicationInfo'),
       statusDesc: app.globalData.statusDesc
-    });
-
-    var that = this;
-    wx.cloud.getTempFileURL({
-      fileList: that.data.applicationInfo.materials,
-      success: res => {
-        // console.log(res.fileList);
-        res.fileList.forEach(item => {
-          // 如果图片链接获取成功
-          if (item.status == 0) {
-            that.setData({
-              fileLinks: that.data.fileLinks.concat(item.tempFileURL)
-            });
-          }
-        });
-        // console.log(that.data.fileLinks);
-      }
     });
   },
 
@@ -115,6 +110,7 @@ Page({
             that.setData({
               'applicationInfo.status': 1
             });
+            wx.setStorageSync('applicationInfo', that.data.applicationInfo);
           });
         }
       }

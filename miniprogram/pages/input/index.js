@@ -5,7 +5,7 @@ Page({
    * 页面的初始数据
    */
   data: {
-    saved: false,
+    saved: true,
     idIndex: 0,
     idKindList: ['身份证', '护照'],
     idInputType: 'idcard',
@@ -20,39 +20,25 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    if (options.data) {
-      this.setData({
-        applicationInfo: JSON.parse(options.data),
-      });
+    this.setData({
+      applicationInfo: wx.getStorageSync('applicationInfo'),
+    });
 
-      if (this.data.applicationInfo.idKind == '护照') {
-        this.setData({
-          idIndex: 1,
-          idInputType: 'text'
-        });
-      }
-      if (this.data.applicationInfo.codeColor == '红码') {
-        this.setData({
-          codeIndex: 1
-        });
-      }
-      if (this.data.applicationInfo.reason == '其它') {
-        this.setData({
-          reasonIndex: 1
-        });
-      }
-    } else {
+    if (this.data.applicationInfo.idKind == '护照') {
       this.setData({
-        applicationInfo: {
-          'openid': wx.getStorageSync('openid'),
-          'idKind': '身份证',
-          'codeColor': '黄码',
-          'reason': '发热门诊就诊',
-          'date': this.getDateStr(),
-          'status': 0,
-          'materials': [],
-        }
-      })
+        idIndex: 1,
+        idInputType: 'text'
+      });
+    }
+    if (this.data.applicationInfo.codeColor == '红码') {
+      this.setData({
+        codeIndex: 1
+      });
+    }
+    if (this.data.applicationInfo.reason == '其它') {
+      this.setData({
+        reasonIndex: 1
+      });
     }
 
     this.setData({
@@ -68,7 +54,8 @@ Page({
     this.setData({
       idIndex: e.detail.value,
       idInputType: idInputTypeList[e.detail.value],
-      'applicationInfo.idKind': this.data.idKindList[e.detail.value]
+      'applicationInfo.idKind': this.data.idKindList[e.detail.value],
+      saved: false
     });
   },
 
@@ -78,7 +65,8 @@ Page({
   codeColorChange: function (e) {
     this.setData({
       codeIndex: e.detail.value,
-      'applicationInfo.codeColor': this.data.codeColorList[e.detail.value]
+      'applicationInfo.codeColor': this.data.codeColorList[e.detail.value],
+      saved: false
     });
   },
 
@@ -88,7 +76,8 @@ Page({
   reasonChange: function (e) {
     this.setData({
       reasonIndex: e.detail.value,
-      'applicationInfo.reason': this.data.reasonList[e.detail.value]
+      'applicationInfo.reason': this.data.reasonList[e.detail.value],
+      saved: false
     });
   },
 
@@ -97,7 +86,8 @@ Page({
    */
   nameInput: function (e) {
     this.setData({
-      'applicationInfo.name': e.detail.value
+      'applicationInfo.name': e.detail.value,
+      saved: false
     });
   },
 
@@ -106,7 +96,8 @@ Page({
    */
   contactInput: function (e) {
     this.setData({
-      'applicationInfo.contact': e.detail.value
+      'applicationInfo.contact': e.detail.value,
+      saved: false
     });
   },
 
@@ -115,7 +106,8 @@ Page({
    */
   idInput: function (e) {
     this.setData({
-      'applicationInfo.id': e.detail.value
+      'applicationInfo.id': e.detail.value,
+      saved: false
     });
   },
 
@@ -124,7 +116,8 @@ Page({
    */
   addressInput: function (e) {
     this.setData({
-      'applicationInfo.address': e.detail.value
+      'applicationInfo.address': e.detail.value,
+      saved: false
     });
   },
 
@@ -140,7 +133,7 @@ Page({
     });
     if (this.data.saved) {
       wx.navigateTo({
-        url: '/pages/upload/index?id=' + this.data.applicationInfo._id,
+        url: '/pages/upload/index'
       });
     } else {
       if (this.data.applicationInfo._id) {
@@ -148,27 +141,31 @@ Page({
           name: 'quickstartFunctions',
           data: {
             type: 'updateApplication',
-            id: this.data.applicationInfo._id,
+            id: that.data.applicationInfo._id,
             data: {
-              address: this.data.applicationInfo.address,
-              codeColor: this.data.applicationInfo.codeColor,
-              contact: this.data.applicationInfo.contact,
-              date: this.getDateStr(),
-              id: this.data.applicationInfo.id,
-              idKind: this.data.applicationInfo.idKind,
-              name: this.data.applicationInfo.name,
-              reason: this.data.applicationInfo.reason
+              address: that.data.applicationInfo.address,
+              codeColor: that.data.applicationInfo.codeColor,
+              contact: that.data.applicationInfo.contact,
+              date: that.data.applicationInfo.date,
+              id: that.data.applicationInfo.id,
+              idKind: that.data.applicationInfo.idKind,
+              name: that.data.applicationInfo.name,
+              reason: that.data.applicationInfo.reason
             }
           }
         }).then((resp) => {
+          wx.setStorageSync('applicationInfo', that.data.applicationInfo);
           that.setData({
             saved: true
           });
           if (needUpload) {
-            const data = JSON.stringify(this.data.applicationInfo)
             wx.navigateTo({
-              url: '/pages/upload/index?data=' + data,
+              url: '/pages/upload/index'
             })
+          } else {
+            wx.navigateBack({
+              delta: 1,
+            });
           }
         });
       } else {
@@ -183,10 +180,11 @@ Page({
             saved: true,
             'applicationInfo._id': resp.result._id
           });
+          wx.setStorageSync('applicationInfo', this.data.applicationInfo);
           if (needUpload) {
-            wx.navigateTo({
-              url: '/pages/upload/index?id=' + resp.result._id,
-            })
+            wx.navigateBack({
+              delta: 0,
+            });
           }
         });
       }
@@ -198,16 +196,5 @@ Page({
     wx.navigateBack({
       delta: 0,
     })
-  },
-
-  getDateStr: function () {
-    var timestamp = Date.parse(new Date());
-    var date = new Date(timestamp);
-    var y = date.getFullYear();
-    var m = date.getMonth() + 1;
-    var ms = m < 10 ? '0' + m : m;
-    var d = date.getDate();
-    var ds = d < 10 ? '0' + d : d;
-    return y + '/' + ms + '/' + ds;
   }
 })

@@ -7,11 +7,11 @@
       <view class="weui-article__section">
         <view class="weui-article__h2">一、可以纠码的情形</view>
         <view class="weui-article__p">
-          因发热门诊就诊、系统错误等原因甬行码变红黄码，提供3天以内的核酸检测报告和通信行程卡（绿码），可以纠码；
+          因发热门诊就诊甬行码变码，提供3天以内的核酸检测报告和通信行程卡（绿码），可以纠码；
         </view>
         <view class="weui-article__h2">二、无法纠码的情形</view>
         <view class="weui-article__p">
-          支付宝健康码变码，系统没有提供纠码功能；重点地区来甬人员、密接人员等，系统禁止纠码；
+          支付宝健康码异常请联系0571-88808880（支付宝健康码后台服务部门）；被判定为密接者、次密接者、时空伴随者等情形，请联系所属社区的疫情防控部门申诉改码；
         </view>
         <view class="weui-article__h2">三、法律责任</view>
         <view class="weui-article__p">
@@ -19,12 +19,13 @@
         </view>
         <view class="weui-article__h2">四、关于小程序</view>
         <view class="weui-article__p" style="margin-bottom: 5px;">
-          仅限江北区文教街道居民申请纠码，辖区之外概不受理。
+          仅限江北区文教派出所辖区居民（常住人口、暂住人口）申请纠码。
         </view>
       </view>
     </view>
     <view class="button-sp-area" style="margin-top: 0px;">
       <view class="weui-btn weui-btn_primary" bindtap="submitApplication" disabled="{{canSubmit}}">提交申请</view>
+      <view class="weui-btn weui-btn_default" bindtap="goBack">返回</view>
     </view>
   </view>
 </scroll-view>
