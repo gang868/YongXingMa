@@ -8,6 +8,7 @@ Page({
     files: [],
     fileLinks: [],
     hasImage: false,
+    uploading: false,
     resetMaterials: true // 是否取代原图片 
   },
 
@@ -25,9 +26,11 @@ Page({
       fileList: that.data.applicationInfo.materials,
       success: res => {
         res.fileList.forEach(item => {
-          that.setData({
-            fileLinks: that.data.fileLinks.concat(item.tempFileURL)
-          });
+          if (item.status == 0) {
+            that.setData({
+              fileLinks: that.data.fileLinks.concat(item.tempFileURL)
+            });
+          }
         });
       }
     });
@@ -74,9 +77,11 @@ Page({
    * @param {*} e 
    */
   previewImage: function (e) {
+    var src = e.currentTarget.dataset.src;
+    var list = e.currentTarget.dataset.list;
     wx.previewImage({
-      current: e.currentTarget.id,
-      urls: this.data.files,
+      current: src,
+      urls: list
     })
   },
 
@@ -87,34 +92,39 @@ Page({
     var i = 1;
     var that = this;
     // 清除云端文件
-    wx.cloud.deleteFile({
-      fileList: that.data.applicationInfo.materials
-    });
+    if (that.data.applicationInfo.materials) {
+      wx.cloud.deleteFile({
+        fileList: that.data.applicationInfo.materials
+      });
+    }
     // 重置客户端变量
     this.setData({
       'applicationInfo.materials': [],
-      fileLinks: []
+      fileLinks: [],
+      uploading: true
     });
 
     /**
      * 递归调用解决文件列表依次上传问题
      * @param {图片数组}} img_array 
      */
-    function uploadImagesOneByOne(img_array, index) {
+    function uploadImagesOneByOne(img_array, i) {
       // 提取文件数组第一个文件
       var img = img_array[0];
       // 获取第一个文件扩展名
       var ext = img.substring(img.lastIndexOf('.')).toLowerCase();
       wx.showLoading({
-        title: '正在上传第' + index + '张图片...',
+        title: '正在上传第' + i + '张图片...',
       });
       // 如果数组剩余个数为1，完成最后一个图片上传后，更新云端数据库记录，获取云端图片访问链接
-      var cloudFilename = that.data.applicationInfo._id + '_' + String(index) + ext;
+      var cloudFilename = that.data.applicationInfo._id + '_' + String(i) + ext;
       if (img_array.length == 1) {
         wx.cloud.uploadFile({
           cloudPath: cloudFilename,
           filePath: img,
           success: res => {
+            console.log(i, res);
+            // console.log('最后-索引、原图、云名、ID', i, img, cloudFilename, res.fileID);
             wx.hideLoading();
             // 图片上传成功后操作
             that.setData({
@@ -136,14 +146,23 @@ Page({
             wx.cloud.getTempFileURL({
               fileList: that.data.applicationInfo.materials,
               success: res => {
+                var fls = [];
+                res.fileList.forEach(file => {
+                  if (file.status == 0) {
+                    fls = fls.concat(file.tempFileURL);
+                  }
+                });
+
                 that.setData({
-                  fileLinks: res.fileList
+                  fileLinks: fls
                 });
               }
             });
             // 清空上传列表
             that.setData({
-              files: []
+              files: [],
+              uploading: false,
+              hasImage: false
             });
           }
         });
@@ -155,13 +174,15 @@ Page({
           cloudPath: cloudFilename,
           filePath: img,
           success: res => {
+            console.log(i, res);
+            // console.log('索引、原图、云名、ID', i, img, cloudFilename, res.fileID)
             // 图片上传成功后操作
             that.setData({
               'applicationInfo.materials': that.data.applicationInfo.materials.concat(res.fileID)
             });
             // 上传成功后，将切除第一个图片的剩余数组递归调用上传
             wx.hideLoading();
-            uploadImagesOneByOne(new_array, index + 1);
+            uploadImagesOneByOne(new_array, i + 1);
           }
         });
       }

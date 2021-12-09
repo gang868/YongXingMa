@@ -21,7 +21,9 @@ Page({
     this.setData({
       hasGotUserData: false
     });
-    this.getApplictionList(this.data.openid);
+    if (this.data.openid) {
+      this.getApplictionList(this.data.openid);
+    }
   },
 
   /**
@@ -38,6 +40,7 @@ Page({
         type: 'getOpenId'
       }
     }).then((resp) => {
+      wx.setStorageSync('openid', resp.result.openid);
       that.getApplictionList(resp.result.openid);
       this.setData({
         openid: resp.result.openid
@@ -113,7 +116,7 @@ Page({
 
   onPullDownRefresh: function (e) {
     wx.showNavigationBarLoading();
-    setTimeout(()=>{
+    setTimeout(() => {
       wx.stopPullDownRefresh();
       wx.hideNavigationBarLoading();
     }, 3000);

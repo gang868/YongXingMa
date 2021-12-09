@@ -72,23 +72,26 @@ Page({
     wx.cloud.getTempFileURL({
       fileList: that.data.applicationInfo.materials,
       success: res => {
+        // console.log(res.fileList);
         res.fileList.forEach(item => {
-          that.setData({
-            fileLinks: that.data.fileLinks.concat(item.tempFileURL)
-          });
+          // 如果图片链接获取成功
+          if (item.status == 0) {
+            that.setData({
+              fileLinks: that.data.fileLinks.concat(item.tempFileURL)
+            });
+          }
         });
+        // console.log(that.data.fileLinks);
       }
     });
   },
 
-  /**
-   * 点击放大察看图片
-   * @param {*} e 
-   */
   previewImage: function (e) {
+    var src = e.currentTarget.dataset.src;
+    var list = e.currentTarget.dataset.list;
     wx.previewImage({
-      current: e.currentTarget.id,
-      urls: this.data.fileLinks
+      current: src,
+      urls: list
     })
   },
 
