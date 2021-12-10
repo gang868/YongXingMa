@@ -1,0 +1,44 @@
+<page-meta root-font-size="system" />
+<view class="page">
+  <view class="page__bd">
+    <view class="weui-cells weui-cells_after-title">
+      <view class="weui-cells__title">问题</view>
+      <view class="weui-cells weui-cells_after-title">
+        <view class="weui-cell weui-cell_active">
+          <view class="weui-cell__bd">
+            <input class="weui-input" placeholder-class="weui-input__placeholder" placeholder="请输入问题" value="{{data.title}}" bindinput="titleInput" />
+          </view>
+        </view>
+      </view>
+      <view class="weui-cells__title">回答</view>
+      <view class="weui-cells weui-cells_after-title">
+        <view class="weui-cell weui-cell_active">
+          <view class="weui-cell__bd">
+            <textarea class="weui-textarea" placeholder-class="weui-input__placeholder" placeholder="请输入回答" style="height: 7.3em" value="{{data.desc}}" bindinput="descInput" />
+            <view aria-role="option" title="字数统计" class="weui-textarea-counter">{{descLength}}/200</view>
+          </view>
+        </view>
+      </view>
+      <view class="weui-cells__title">来源</view>
+      <view class="weui-cells weui-cells_after-title">
+        <view class="weui-cell weui-cell_active">
+          <view class="weui-cell__bd">
+            <input class="weui-input" placeholder-class="weui-input__placeholder" placeholder="请输入来源" value="{{data.source}}" bindinput="sourceInput" />
+          </view>
+        </view>
+      </view>
+      <view class="weui-cells__title" id="js_date" aria-hidden="true">日期</view>
+      <view class="weui-cell weui-cells_after-title">
+        <view class="weui-cell__bd">
+          <picker mode="date" aria-role="combobox" aria-labelledby="js_date" value="{{data.date}}" start="2021-12-01" end="2030-12-01" bindchange="bindDateChange">
+            <view class="weui-input">{{data.date}}</view>
+          </picker>
+        </view>
+      </view>
+      <view class="button-sp-area" style="margin-top: 20px;">
+        <view class="weui-btn weui-btn_primary" bindtap="saveQuestion">保存</view>
+        <view class="weui-btn weui-btn_default" bindtap="newQuestion" wx:if="{{!isNew}}">新建</view>
+      </view>
+    </view>
+  </view>
+</view>

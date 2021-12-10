@@ -3,6 +3,7 @@ const app = getApp()
 
 Page({
   data: {
+    isApplicant: true, // 默认为前台申请模式
     hasGotUserData: false, // 是否已经获取用户申请数据
     hasActiveApplication: true, // 是否存在活动申请
     applicationList: [] // 用户所有申请列表
@@ -24,7 +25,11 @@ Page({
     });
     // 重新获取申请列表
     if (this.data.openid) {
-      this.getApplictionList(this.data.openid);
+      if (this.data.isApplicant) {
+        this.getApplictionList(this.data.openid);
+      } else {
+        this.getCaseList();
+      }
     }
   },
 
@@ -43,12 +48,45 @@ Page({
       }
     }).then((resp) => {
       wx.setStorageSync('openid', resp.result.openid);
-      that.getApplictionList(resp.result.openid);
-      this.setData({
+      // 尝试获取后台操作员令牌
+      that.getOperatorToken(resp.result.openid);
+      that.setData({
         openid: resp.result.openid
       });
     });
     wx.hideLoading();
+  },
+
+  getOperatorToken: function (openid) {
+    var that = this;
+    wx.cloud.callFunction({
+      name: 'quickstartFunctions',
+      data: {
+        type: 'getOperatorTokenByOpenid',
+        openid: openid
+      }
+    }).then((resp) => {
+      // 如果获取成功，则进入后台操作模式，否则进入前台申请模式
+      if (resp.result.data.length > 0) {
+        wx.setStorageSync('operatorInfo', resp.result.data[0]);
+        wx.setTabBarItem({
+          index: 0,
+          text: '待处理',
+          iconPath: '/images/cases_on.png',
+          selectedIconPath: '/images/cases_on_red.png'
+        });
+        that.setData({
+          isApplicant: false
+        });
+        that.getCaseList();
+      } else {
+        that.getApplictionList(openid);
+      }
+    });
+  },
+
+  getCaseList: function () {
+
   },
 
   /**

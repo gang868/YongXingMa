@@ -1,35 +1,32 @@
 <!--index.wxml-->
 <scroll-view class="page" scroll-y="true" show-scrollbar="false">
-  <view class="weui-form">
-    <view class="weui-form__text-area" wx:if="{{!hasGotUserData}}">
-      <h2 class="weui-form__title">正在获取用户数据...</h2>
-    </view>
-    <view wx:else>
-      <view class="weui-form__text-area">
-        <view wx:if="{{!hasActiveApplication}}">
-          <view class="weui-btn weui-btn_primary" bindtap="apply">发起申请</view>
-        </view>
-        <view wx:if="{{hasActiveApplication}}">
-          <h2 class="weui-form__title">申请正在处理</h2>
-        </view>
+  <block wx:if="{{!isApplicant}}"></block>
+  <block wx:else>
+    <view class="weui-form">
+      <view class="weui-form__text-area" wx:if="{{!hasGotUserData}}">
+        <h2 class="weui-form__title">正在获取用户数据...</h2>
       </view>
-      <view class="weui-form__control-area">
-        <view class="weui-cells__group weui-cells__group_form">
-          <view class="weui-cells__title">申请记录（{{applicationList.length}}）</view>
-          <view class="weui-cells">
-            <view class="weui-cell weui-cell_access" hover-class="weui-cell_active" wx:key="title" wx:for="{{applicationList}}" wx:for-item="item" bindtap="viewApplicationInfo" data-index="{{index}}">
-              <view class="weui-cell__bd">{{item.date}} {{item.name}}</view>
-              <view class="weui-cell__ft">{{statusDesc[item.status]}}</view>
+      <view wx:else>
+        <view class="weui-form__text-area">
+          <view wx:if="{{!hasActiveApplication}}">
+            <view class="weui-btn weui-btn_primary" bindtap="apply">发起申请</view>
+          </view>
+          <view wx:if="{{hasActiveApplication}}">
+            <h2 class="weui-form__title">申请正在处理</h2>
+          </view>
+        </view>
+        <view class="weui-form__control-area">
+          <view class="weui-cells__group weui-cells__group_form">
+            <view class="weui-cells__title">申请记录（{{applicationList.length}}）</view>
+            <view class="weui-cells">
+              <view class="weui-cell weui-cell_access" hover-class="weui-cell_active" wx:key="title" wx:for="{{applicationList}}" wx:for-item="item" bindtap="viewApplicationInfo" data-index="{{index}}">
+                <view class="weui-cell__bd">{{item.date}} {{item.name}}</view>
+                <view class="weui-cell__ft">{{statusDesc[item.status]}}</view>
+              </view>
             </view>
           </view>
         </view>
       </view>
     </view>
-    <view class="weui-footer weui-footer_fixed-bottom">
-			<view class="weui-footer__links">
-				<navigator class="weui-footer__link weui-wa-hotarea" url="javascript:home();">甬行码纠码申请</navigator>
-			</view>
-			<view class="weui-footer__text">2021 © WJPCS</view>
-		</view>
-  </view>
+  </block>
 </scroll-view>

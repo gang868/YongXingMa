@@ -117,6 +117,12 @@ Page({
     });
   },
 
+  gotoIndex:function(){
+    wx.switchTab({
+      url: '/pages/index/index',
+    })
+  },
+
   /**
    * 用户点击右上角分享
    */

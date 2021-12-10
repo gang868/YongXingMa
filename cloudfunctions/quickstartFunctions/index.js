@@ -4,7 +4,10 @@ const createApplication = require('./createApplication/index');
 const selectApplicationByOpenid = require('./selectApplicationByOpenid/index');
 const updateApplication = require('./updateApplication/index');
 const deleteApplication = require('./deleteApplication/index');
-
+const getOperatorTokenByOpenid = require('./getOperatorTokenByOpenid/index');
+const getQuestion = require('./getQuestion/index');
+const updateQuestion = require('./updateQuestion/index');
+const createQuestion = require('./createQuestion/index');
 
 // 云函数入口函数
 exports.main = async (event, context) => {
@@ -23,5 +26,13 @@ exports.main = async (event, context) => {
       return await deleteApplication.main(event, context);
     case 'selectApplicationById':
       return await selectApplicationById.main(event, context);
+    case 'getOperatorTokenByOpenid':
+      return await getOperatorTokenByOpenid.main(event, context);
+    case 'getQuestion':
+      return await getQuestion.main(event, context);
+    case 'updateQuestion':
+      return await updateQuestion.main(event, context);
+    case 'createQuestion':
+      return await createQuestion.main(event, context);
   }
 };

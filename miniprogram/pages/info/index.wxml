@@ -55,6 +55,7 @@
       </view>
       <view class="weui-btn weui-btn_default" wx:if="{{applicationInfo.status<2}}" bindtap="modApplication">修改</view>
       <view class="weui-btn weui-btn_warn" wx:if="{{applicationInfo.status<2}}" bindtap="delApplication">删除</view>
+      <view class="weui-btn weui-btn_default" bindtap="gotoIndex">回到主页</view>
       <view class="weui-btn weui-btn_warn" wx:if="{{applicationInfo.status==2}}" bindtap="recallApplication">撤回申请</view>
     </view>
   </view>

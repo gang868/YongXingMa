@@ -4,8 +4,28 @@
     "pages/input/index",
     "pages/info/index",
     "pages/upload/index",
-    "pages/submit/index"
+    "pages/submit/index",
+    "pages/about/index",
+    "pages/cases_on/index",
+    "pages/cases_finish/index",
+    "pages/question/index"
   ],
+  "tabBar": {
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "iconPath": "images/applying.png",
+        "selectedIconPath": "images/applying_red.png",
+        "text": "申请"
+      },
+      {
+        "pagePath": "pages/about/index",
+        "iconPath": "images/about.png",
+        "selectedIconPath": "images/about_red.png",
+        "text": "问答"
+      }
+    ]
+  },
   "window": {
     "backgroundColor": "#F6F6F6",
     "backgroundTextStyle": "light",

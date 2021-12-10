@@ -1,0 +1,17 @@
+<page-meta root-font-size="system" />
+<view class="page" style="background-color: lightgray;">
+  <view class="page__bd">
+    <view class="weui-panel weui-panel_access">
+      <view class="weui-panel__bd">
+        <view class="weui-media-box weui-media-box_text" wx:for="{{questionList}}" wx:key="_id" wx:for-item="item" data-index="{{index}}" bindtap="iAmTaped">
+          <text class="weui-media-box__title" decode="true">{{index+1}}. &nbsp;&nbsp;{{item.title}}</text>
+          <text class="weui-media-box__desc" >{{item.desc}}</text>
+          <view class="weui-media-box__info">
+            <view class="weui-media-box__info__meta">{{item.source}}</view>
+            <view class="weui-media-box__info__meta weui-media-box__info__meta_extra">{{item.dateStr}}</view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

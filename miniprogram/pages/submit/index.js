@@ -16,7 +16,7 @@ Page({
       applicationInfo: wx.getStorageSync('applicationInfo')
     });
 
-    if (this.onAddToFavorites.applicationInfo.status == 1) {
+    if (this.data.applicationInfo.status == 1) {
       this.setData({
         canSubmit: true
       });
@@ -40,8 +40,8 @@ Page({
         'applicationInfo.status': 2
       });
       wx.setStorageSync('applicationInfo', that.data.applicationInfo);
-      wx.navigateTo({
-        url: '/pages/index/index',
+      wx.redirectTo({
+        url: '/pages/info/index',
       });
     });
   },
