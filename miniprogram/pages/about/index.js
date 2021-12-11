@@ -6,6 +6,7 @@ Page({
    */
   data: {
     isApplicant: true,
+    showMe: false,
     questionList: []
   },
 
@@ -44,17 +45,23 @@ Page({
     const index = e.currentTarget.dataset.index;
     var item = this.data.questionList[index];
     if (this.data.isApplicant) {
-      wx.showModal({
-        title: item.title,
-        content: item.desc,
-        showCancel: false
-      });
+      this.setData({
+        showMe: true,
+        showTitle: item.title,
+        showDesc: item.desc
+      })
     } else {
       wx.setStorageSync('questionInfo', item)
       wx.navigateTo({
         url: '/pages/question/index',
       })
     }
+  },
+
+  closeShowMe: function(){
+    this.setData({
+      showMe: false
+    })
   },
   /**
    * 获取指定格式的日期字符串

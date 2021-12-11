@@ -14,4 +14,30 @@
       </view>
     </view>
   </view>
+  <view class="fadeIn" wx:if="{{showMe}}" aria-role="dialog" aria-modal="true" aria-labelledby="js_dialog2_title">
+        <view class="weui-mask" aria-role="button" aria-label="关闭" bindtap="closeShowMe"></view>
+        <view class="weui-half-screen-dialog weui-half-screen-dialog_bottom-fixed">
+            <view class="weui-half-screen-dialog__hd">
+                <view class="weui-half-screen-dialog__hd__side" bindtap="closeShowMe">
+                    <view aria-role="button" hidden class="weui-icon-btn weui-wa-hotarea">返回<i class="weui-icon-back-arrow-thin"></i></view>
+                    <view aria-role="button" class="weui-icon-btn weui-wa-hotarea">关闭<i class="weui-icon-close-thin"></i></view>
+                </view>
+                <view class="weui-half-screen-dialog__hd__main">
+                    <strong class="weui-half-screen-dialog__title" id="js_dialog2_title">问答</strong>
+                </view>
+            </view>
+            <view class="weui-half-screen-dialog__bd">
+                <view class="weui-bottom-fixed-opr-page">
+                  <view class="weui-bottom-fixed-opr-page__content">
+                    <view class="weui-half-screen-dialog__desc">
+                      {{showTitle}}
+                    </view>
+                    <view class="weui-half-screen-dialog__tips" role="option">
+                      {{showDesc}}
+                    </view>
+                  </view>
+                </view>
+            </view>
+        </view>
+    </view>
 </view>
