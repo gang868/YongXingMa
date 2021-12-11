@@ -6,7 +6,56 @@ Page({
     isApplicant: true, // 默认为前台申请模式
     hasGotUserData: false, // 是否已经获取用户申请数据
     hasActiveApplication: true, // 是否存在活动申请
-    applicationList: [] // 用户所有申请列表
+    applicationList: [], // 用户所有申请列表
+    currentCaseStatus: 2,
+    searchShowed: false,
+    searchVal: '',
+    searchHistory: ['abc', 'acd', 'bcd'],
+    searchHistoryMatched: [],
+  },
+
+  selectHistory: function (e) {
+    this.setData({
+      searchVal: e.currentTarget.dataset.value,
+    });
+    this.searchConfirm();
+  },
+
+  searchConfirm: function () {
+    console.log('let search......')
+  },
+
+  showSearch: function () {
+    this.setData({
+      searchShowed: true
+    });
+  },
+
+  hideSearch: function () {
+    this.setData({
+      searchVal: "",
+      searchShowed: false
+    });
+  },
+
+  clearSearch: function () {
+    this.setData({
+      searchVal: ""
+    });
+  },
+
+  searchTyping: function (e) {
+    var sv = e.detail.value;
+    var matched = [];
+    this.data.searchHistory.forEach(item => {
+      if (item.indexOf(sv) >= 0) {
+        matched = matched.concat(item);
+      }
+    });
+    this.setData({
+      searchVal: e.detail.value,
+      searchHistoryMatched: matched
+    });
   },
 
   onLoad: function (options) {
@@ -78,15 +127,35 @@ Page({
         that.setData({
           isApplicant: false
         });
+        wx.setStorageSync('isApplicant', false);
         that.getCaseList();
       } else {
+        that.setData({
+          isApplicant: true
+        });
+        wx.setStorageSync('isApplicant', true);
         that.getApplictionList(openid);
       }
     });
   },
 
   getCaseList: function () {
-
+    var that = this;
+    wx.cloud.callFunction({
+      name: 'quickstartFunctions',
+      data: {
+        type: 'selectApplicationByStatus',
+        status: that.data.currentCaseStatus
+      }
+    }).then((resp) => {
+      // console.log(resp);
+      if (resp.result) {
+        wx.setStorageSync('applicationList', resp.result.data);
+        that.setData({
+          applicationList: resp.result.data
+        });
+      }
+    });
   },
 
   /**
@@ -133,7 +202,7 @@ Page({
     wx.getUserProfile({
       desc: '确认申请人微信信息',
       success(res) {
-        console.log(res.userInfo);
+        // console.log(res.userInfo);
         wx.setStorageSync('userInfo', res.userInfo);
         that.setData({
           userInfo: res.userInfo

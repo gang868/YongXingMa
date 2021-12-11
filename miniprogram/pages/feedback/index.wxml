@@ -1,0 +1,71 @@
+<!--pages/feedback/index.wxml-->
+<view class="page">
+  <view class="my-form">
+    <view class="weui-form__text-area">
+      <h3 class="weui-form__title">处理反馈</h3>
+    </view>
+    <view class="weui-form__control-area" style="margin-top: 10px;background-color: white;">
+      <view class="weui-cells__group weui-cells__group_form">
+        <!--姓名-->
+        <view class="weui-cell weui-cell_active">
+          <view class="weui-cell__hd">
+            <view class="weui-label">姓名</view>
+          </view>
+          <view class="weui-cell__bd weui-flex">{{applicationInfo.name}}</view>
+        </view>
+        <!--联系方式-->
+        <view class="weui-cell weui-cell_active">
+          <view class="weui-cell__hd">
+            <view class="weui-label">联系方式</view>
+          </view>
+          <view class="weui-cell__bd weui-flex">{{applicationInfo.contact}}</view>
+        </view>
+        <!--证件类型-->
+        <view class="weui-cell weui-cell_active">
+          <view class="weui-cell__hd">
+            <view class="weui-label">{{applicationInfo.idKind}}</view>
+          </view>
+          <view class="weui-cell__bd weui-flex">{{applicationInfo.id}}</view>
+        </view>
+        <!--家庭住址-->
+        <view class="weui-cell weui-cell_active">
+          <view class="weui-cell__hd">
+            <view class="weui-label">家庭住址</view>
+          </view>
+          <view class="weui-cell__bd weui-flex">{{applicationInfo.address}}</view>
+        </view>
+        <!--码颜色-->
+        <view class="weui-cell weui-cell_active">
+          <view class="weui-cell__hd">
+            <view class="weui-label">变码情况</view>
+          </view>
+          <view class="weui-cell__bd weui-flex">{{applicationInfo.codeColor}}（{{applicationInfo.reason}}）</view>
+        </view>
+        <!--反馈状态-->
+        <view class="weui-cell weui-cell_active weui-cell_select weui-cell_select-after">
+          <view class="weui-cell__hd">
+            <view class="weui-label">反馈结果</view>
+          </view>
+          <view class="weui-cell__bd weui-flex">
+            <picker value="{{feedbackStatusIndex}}" range="{{feedbackStatusList}}" bindchange="feedbackStatusChange">
+              <view class="weui-select">{{feedbackStatusList[feedbackStatusIndex]}}</view>
+            </picker>
+          </view>
+        </view>
+        <!--反馈说明-->
+        <view class="weui-cell weui-cell_active">
+          <view class="weui-cell__hd">
+            <view class="weui-label">反馈说明</view>
+          </view>
+          <view class="weui-cell__bd weui-flex">
+            <input class="weui-input" auto-focus placeholder="输入反馈说明" value="{{feedbackMemo}}" bindinput="feedbackMemoInput"/>
+          </view>
+        </view>
+      </view>
+    </view>
+    <view class="weui-form__opr-area" style="margin-top: 10px;">
+      <view class="weui-btn weui-btn_primary" bindtap="feedbackApplication" wx:if="{{applicationInfo.status==2}}">提交</view>
+      <view class="weui-btn weui-btn_default" bindtap="goBack">返回</view>
+    </view>
+  </view>
+</view>

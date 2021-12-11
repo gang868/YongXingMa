@@ -8,7 +8,8 @@
     "pages/about/index",
     "pages/cases_on/index",
     "pages/cases_finish/index",
-    "pages/question/index"
+    "pages/question/index",
+    "pages/feedback/index"
   ],
   "tabBar": {
     "list": [

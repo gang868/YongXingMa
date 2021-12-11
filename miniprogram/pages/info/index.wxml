@@ -27,12 +27,8 @@
         <view class="weui-cell__ft">{{applicationInfo.address}}</view>
       </view>
       <view class="weui-cell">
-        <view class="weui-cell__bd">码颜色</view>
-        <view class="weui-cell__ft">{{applicationInfo.codeColor}}</view>
-      </view>
-      <view class="weui-cell">
-        <view class="weui-cell__bd">变码原因</view>
-        <view class="weui-cell__ft">{{applicationInfo.reason}}</view>
+        <view class="weui-cell__bd">变码情况</view>
+        <view class="weui-cell__ft">{{applicationInfo.codeColor}}（{{applicationInfo.reason}}）</view>
       </view>
       <view class="weui-cell">
         <view class="weui-cell__bd">证据材料</view>
@@ -48,7 +44,7 @@
         </block>
       </view>
     </view>
-    <view class="button-sp-area" style="margin-top: 20px;">
+    <view class="button-sp-area" style="margin-top: 20px;" wx:if="{{isApplicant}}">
       <view class="weui-btn weui-btn_primary" wx:if="{{applicationInfo.status==1}}" bindtap="submitApplication">提交申请</view>
       <view class="weui-btn weui-btn_primary" wx:if="{{applicationInfo.status<2}}" bindtap="modMaterials">
         <block wx:if="{{applicationInfo.status==1}}">重新</block>上传材料
@@ -57,6 +53,10 @@
       <view class="weui-btn weui-btn_warn" wx:if="{{applicationInfo.status<2}}" bindtap="delApplication">删除</view>
       <view class="weui-btn weui-btn_default" bindtap="gotoIndex">回到主页</view>
       <view class="weui-btn weui-btn_warn" wx:if="{{applicationInfo.status==2}}" bindtap="recallApplication">撤回申请</view>
+    </view>
+    <view class="button-sp-area" style="margin-top: 20px;" wx:else>
+      <view class="weui-btn weui-btn_primary" bindtap="feedbackCase">反馈处理结果</view>
+      <view class="weui-btn weui-btn_default" bindtap="gotoIndex">回到主页</view>
     </view>
   </view>
 </view>

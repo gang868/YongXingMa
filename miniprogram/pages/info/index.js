@@ -64,7 +64,7 @@ Page({
             });
             if (resp.errMsg == 'cloud.callFunction:ok') {
               wx.removeStorageSync('applicationInfo');
-              wx.redirectTo({
+              wx.switchTab({
                 url: '/pages/index/index'
               });
             }
@@ -121,6 +121,12 @@ Page({
     wx.switchTab({
       url: '/pages/index/index',
     })
+  },
+
+  feedbackCase: function(){
+    wx.navigateTo({
+      url: '/pages/feedback/index',
+    });
   },
 
   /**
