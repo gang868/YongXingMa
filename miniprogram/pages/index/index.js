@@ -1,8 +1,8 @@
 // index.js
 const app = getApp()
-
 Page({
   data: {
+    showSearchFormat: false,
     isApplicant: true, // 默认为前台申请模式
     hasGotUserData: false, // 是否已经获取用户申请数据
     hasActiveApplication: true, // 是否存在活动申请
@@ -10,19 +10,64 @@ Page({
     currentCaseStatus: 2,
     searchShowed: false,
     searchVal: '',
-    searchHistory: ['abc', 'acd', 'bcd'],
-    searchHistoryMatched: [],
+    searchFormat: {
+      c1: ['姓名', '证件号', '联系方式', '地址'],
+      c2: ['姓名+证件号', '姓名+联系方式', '姓名+地址'],
+      c3: ['姓名+证件号+地址', '姓名+联系方式+地址']
+    },
+    searchFormatMatched: [],
   },
 
   selectHistory: function (e) {
-    this.setData({
-      searchVal: e.currentTarget.dataset.value,
+    var conditions = this.data.searchVal.split(/\s+/);
+    if (conditions[conditions.length - 1] == '') {
+      conditions.pop();
+    }
+
+    var formats = e.currentTarget.dataset.value.split('+');
+    if (formats[formats.length - 1] == '') {
+      formats.pop();
+    }
+    var i = 0,
+      sv = '';
+    formats.forEach(fmt => {
+      sv = sv + fmt + ':' + conditions[i] + ' ';
+      i++;
     });
+
+    this.setData({
+      searchVal: sv,
+    });
+
     this.searchConfirm();
   },
 
   searchConfirm: function () {
-    console.log('let search......')
+    var that = this;
+    var searchVal = this.data.searchVal;
+    this.setData({
+      searchVal: ''
+    });
+
+    var searchValPairs = searchVal.split(/\s+/);
+    if (searchValPairs[searchValPairs.length - 1] == '') {
+      searchValPairs.pop();
+    }
+
+    wx.cloud.callFunction({
+      name: 'quickstartFunctions',
+      data: {
+        'type': 'searchApplication',
+        'searchConditions': searchValPairs
+      }
+    }).then((resp)=>{
+      if (resp.result) {
+        wx.setStorageSync('applicationList', resp.result.data);
+        that.setData({
+          applicationList: resp.result.data
+        });
+      }
+    });
   },
 
   showSearch: function () {
@@ -46,15 +91,39 @@ Page({
 
   searchTyping: function (e) {
     var sv = e.detail.value;
-    var matched = [];
-    this.data.searchHistory.forEach(item => {
-      if (item.indexOf(sv) >= 0) {
-        matched = matched.concat(item);
-      }
-    });
+    var conditions = sv.split(/\s+/);
+    if (conditions[conditions.length - 1] == '') {
+      conditions.pop();
+    }
+
+    switch (conditions.length) {
+      case 0:
+        this.setData({
+          searchFormatMatched: []
+        });
+        break;
+      case 1:
+        this.setData({
+          searchFormatMatched: this.data.searchFormat.c1
+        });
+        break;
+      case 2:
+        this.setData({
+          searchFormatMatched: this.data.searchFormat.c2
+        });
+        break;
+      case 3:
+        this.setData({
+          searchFormatMatched: this.data.searchFormat.c3
+        });
+      default:
+        this.setData({
+          searchFormatMatched: this.data.searchFormat.c3
+        });
+        break;
+    }
     this.setData({
-      searchVal: e.detail.value,
-      searchHistoryMatched: matched
+      searchVal: e.detail.value
     });
   },
 

@@ -9,6 +9,7 @@ const getQuestion = require('./getQuestion/index');
 const updateQuestion = require('./updateQuestion/index');
 const createQuestion = require('./createQuestion/index');
 const selectApplicationByStatus = require('./selectApplicationByStatus/index');
+const searchApplication = require('./searchApplication/index');
 
 // 云函数入口函数
 exports.main = async (event, context) => {
@@ -37,5 +38,7 @@ exports.main = async (event, context) => {
       return await createQuestion.main(event, context);
     case 'selectApplicationByStatus':
       return await selectApplicationByStatus.main(event, context);
+    case 'searchApplication':
+      return await searchApplication.main(event, context);
   }
 };

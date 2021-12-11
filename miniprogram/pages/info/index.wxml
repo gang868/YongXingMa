@@ -55,7 +55,7 @@
       <view class="weui-btn weui-btn_warn" wx:if="{{applicationInfo.status==2}}" bindtap="recallApplication">撤回申请</view>
     </view>
     <view class="button-sp-area" style="margin-top: 20px;" wx:else>
-      <view class="weui-btn weui-btn_primary" bindtap="feedbackCase">反馈处理结果</view>
+      <view class="weui-btn weui-btn_primary" bindtap="feedbackCase" wx:if="{{applicationInfo.status==2}}">反馈处理结果</view>
       <view class="weui-btn weui-btn_default" bindtap="gotoIndex">回到主页</view>
     </view>
   </view>
