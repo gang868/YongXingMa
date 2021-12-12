@@ -60,7 +60,7 @@
     </label>
     -->
     <view class="button-sp-area" style="margin-top: 10px;">
-      <view class="weui-btn weui-btn_primary" bindtap="uploadImages" wx:if="{{hasImage}}" disabled="{{uploading}}">上传图片</view>
+      <view class="weui-btn weui-btn_primary" bindtap="uploadImages" wx:if="{{hasImage&&(!uploading)}}">上传图片</view>
       <view class="weui-btn weui-btn_default" bindtap="clearImages"  wx:if="{{hasImage}}">重新选择</view>
       <view class="weui-btn weui-btn_primary" bindtap="submitApplication"  wx:if="{{applicationInfo.materials.length > 1}}">提交申请</view>
     </view>

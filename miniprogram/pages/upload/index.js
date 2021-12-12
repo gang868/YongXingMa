@@ -107,11 +107,8 @@ Page({
   uploadImages: function () {
     var i = 1;
     var that = this;
-    // 清除云端文件
-    if (that.data.applicationInfo.materials) {
-      wx.cloud.deleteFile({
-        fileList: that.data.applicationInfo.materials
-      });
+    if(this.data.uploading) {
+      return; // 加一道保险，防止异步问题，当正在上传时，不能重复执行下面的代码
     }
     // 重置客户端变量
     this.setData({
@@ -119,6 +116,12 @@ Page({
       fileLinks: [],
       uploading: true
     });
+    // 清除云端文件
+    if (that.data.applicationInfo.materials) {
+      wx.cloud.deleteFile({
+        fileList: that.data.applicationInfo.materials
+      });
+    }
 
     /**
      * 递归调用解决文件列表依次上传问题
