@@ -17,7 +17,7 @@
         <view aria-role="button" class="weui-search-bar__cancel-btn" bindtap="hideSearch">取消</view>
       </view>
       <view aria-role="listbox" id="searchResult" class="weui-cells searchbar-result" wx:if="{{searchVal.length > 0}}">
-        <view role="option" class="weui-cell weui-cell_active weui-cell_access" wx:for="{{searchFormatMatched}}" bindtap="selectHistory" wx:key="*this" data-value="{{item}}">
+        <view role="option" class="weui-cell weui-cell_active weui-cell_access" wx:for="{{searchFormatMatched}}" bindtap="selectFormat" wx:key="*this" data-value="{{item}}">
           <view class="weui-cell__bd weui-cell_primary">
             <view>查找方式：{{item}}</view>
           </view>

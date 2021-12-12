@@ -9,6 +9,13 @@ Page({
     fileLinks: []
   },
 
+  onLoad: function(options) {
+    // 增加后台管理后，修订无isApplicant变量导致功能按钮不显示的BUG
+    this.setData({
+      isApplicant: wx.getStorageSync('isApplicant')
+    });
+  },
+
   goBack: function () {
     wx.navigateBack({
       delta: 0,

@@ -10,6 +10,10 @@
         <view class="weui-cell__bd">当前状态</view>
         <view class="weui-cell__ft">{{statusDesc[applicationInfo.status]}}</view>
       </view>
+      <view class="weui-cell" wx:if="{{applicationInfo.feedbackMemo}}">
+        <view class="weui-cell__bd">处理结果</view>
+        <view class="weui-cell__ft">{{applicationInfo.feedbackMemo}}</view>
+      </view>
       <view class="weui-cell">
         <view class="weui-cell__bd">姓名</view>
         <view class="weui-cell__ft">{{applicationInfo.name}}</view>

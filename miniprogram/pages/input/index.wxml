@@ -1,4 +1,4 @@
-<view class="page">
+<form class="page" bindsubmit="submitForm">
   <view class="my-form">
     <view class="weui-form__text-area">
       <h3 class="weui-form__title">填写申请表</h3>
@@ -11,7 +11,7 @@
             <view class="weui-label">姓名</view>
           </view>
           <view class="weui-cell__bd weui-flex">
-            <input class="weui-input" type="text" placeholder-class="weui-input__placeholder" placeholder="输入姓名" value="{{applicationInfo.name}}" bindinput="nameInput"/>
+            <input class="weui-input" type="text" placeholder-class="weui-input__placeholder" placeholder="输入姓名" value="{{applicationInfo.name}}" bindinput="nameInput" name="name"/>
           </view>
         </view>
         <!--联系方式-->
@@ -20,7 +20,7 @@
             <view class="weui-label">联系方式</view>
           </view>
           <view class="weui-cell__bd weui-flex">
-            <input class="weui-input" type="number" placeholder-class="weui-input__placeholder" placeholder="输入手机号码（电话）" value="{{applicationInfo.contact}}" bindinput="contactInput"/>
+            <input class="weui-input" type="number" placeholder-class="weui-input__placeholder" placeholder="输入手机号码（电话）" value="{{applicationInfo.contact}}" bindinput="contactInput" name="contact"/>
           </view>
         </view>
         <!--证件类型-->
@@ -40,7 +40,7 @@
             <view class="weui-label">证件号码</view>
           </view>
           <view class="weui-cell__bd weui-flex">
-            <input class="weui-input" type="{{idInputType}}" placeholder-class="weui-input__placeholder" placeholder="输入证件号码" value="{{applicationInfo.id}}" maxlength="18" bindinput="idInput"/>
+            <input class="weui-input" type="{{idInputType}}" placeholder-class="weui-input__placeholder" placeholder="输入证件号码" value="{{applicationInfo.id}}" maxlength="18" bindinput="idInput" name="id"/>
           </view>
         </view>
         <!--家庭住址-->
@@ -49,7 +49,7 @@
             <view class="weui-label">家庭住址</view>
           </view>
           <view class="weui-cell__bd weui-flex">
-            <input class="weui-input" auto-focus placeholder="输入当前家庭住址" value="{{applicationInfo.address}}" bindinput="addressInput"/>
+            <input class="weui-input" auto-focus placeholder="输入当前家庭住址" value="{{applicationInfo.address}}" bindinput="addressInput" name="address"/>
           </view>
         </view>
         <!--码颜色-->
@@ -77,10 +77,10 @@
       </view>
     </view>
     <view class="weui-form__opr-area" style="margin-top: 10px;">
-      <view class="weui-btn weui-btn_primary" bindtap="saveApplication" data-upload="{{applicationInfo.status==0}}" wx:if="{{!saved}}">
+      <button class="weui-btn weui-btn_primary" form-type='submit' data-upload="{{applicationInfo.status==0}}" wx:if="{{!saved}}">
         保存
-      </view>
+      </button>
       <view class="weui-btn weui-btn_default" bindtap="goBack">返回</view>
     </view>
   </view>
-</view>
+</form>

@@ -3,7 +3,7 @@ const app = getApp()
 Page({
   data: {
     showSearchFormat: false,
-    isApplicant: true, // 默认为前台申请模式
+    isApplicant: true, // 是否是前台申请者标志，默认为真，前台申请模式。假则为后台操作员模式
     hasGotUserData: false, // 是否已经获取用户申请数据
     hasActiveApplication: true, // 是否存在活动申请
     applicationList: [], // 用户所有申请列表
@@ -18,43 +18,48 @@ Page({
     searchFormatMatched: [],
   },
 
-  selectHistory: function (e) {
-    var conditions = this.data.searchVal.split(/\s+/);
+  /**
+   * 搜索栏中输入内容后，选择查询格式
+   * @param {*} e 
+   */
+  selectFormat: function (e) {
+    var conditions = this.data.searchVal.split(/\s+/); // 对要搜索内容按空格分离成数组，如："张三 133 花园"分离成['张三', '133', '花园']
     if (conditions[conditions.length - 1] == '') {
-      conditions.pop();
+      conditions.pop(); // 搜索内容最后一个字符为空格时，分离的数据最后一个元素是''，剔除这个元素
     }
 
-    var formats = e.currentTarget.dataset.value.split('+');
+    var formats = e.currentTarget.dataset.value.split('+'); // 格式字符串是用加号，用split分离
     if (formats[formats.length - 1] == '') {
-      formats.pop();
+      formats.pop(); // 其实这一步没必要
     }
     var i = 0,
       sv = '';
     formats.forEach(fmt => {
-      sv = sv + fmt + ':' + conditions[i] + ' ';
+      sv = sv + fmt + ':' + conditions[i] + ' '; // 按格式依次组合成'姓名:李四 联系方式:133 地址:花园'
       i++;
     });
 
     this.setData({
-      searchVal: sv,
+      searchVal: sv, // 将组合成的查询字符串代替原来的搜索内容
     });
 
-    this.searchConfirm();
+    this.searchConfirm(); // 选择格式等同于确认搜索
   },
 
+  /**
+   * 在搜索栏中回车或在输入法中点击搜索触发
+   */
   searchConfirm: function () {
+    var searchVal = this.data.searchVal; // 先将搜索字符串留底
+    this.hideSearch(); // 然后隐藏搜索（搜索字符串会被清空）
     var that = this;
-    var searchVal = this.data.searchVal;
-    this.setData({
-      searchVal: ''
-    });
 
-    var searchValPairs = searchVal.split(/\s+/);
+    var searchValPairs = searchVal.split(/\s+/); // 对'姓名:李四 联系方式:133 地址:花园'或'李 王'等格式拆分
     if (searchValPairs[searchValPairs.length - 1] == '') {
-      searchValPairs.pop();
+      searchValPairs.pop(); // 这一步正常没必要
     }
 
-    wx.cloud.callFunction({
+    wx.cloud.callFunction({ // 召唤查询云函数，在云函数中，会将查询字符串解析进行指定查询
       name: 'quickstartFunctions',
       data: {
         'type': 'searchApplication',
@@ -70,12 +75,18 @@ Page({
     });
   },
 
+  /**
+   * 搜索栏focus触发
+   */
   showSearch: function () {
     this.setData({
       searchShowed: true
     });
   },
 
+  /**
+   * 点击搜索栏取消触发
+   */
   hideSearch: function () {
     this.setData({
       searchVal: "",
@@ -83,20 +94,27 @@ Page({
     });
   },
 
+  /**
+   * 清理搜索内容
+   */
   clearSearch: function () {
     this.setData({
       searchVal: ""
     });
   },
 
+  /**
+   * 搜索栏中输入内容触发
+   * @param {*} e 
+   */
   searchTyping: function (e) {
-    var sv = e.detail.value;
-    var conditions = sv.split(/\s+/);
+    var sv = e.detail.value; // 取得内容
+    var conditions = sv.split(/\s+/); // 按空格分离成数组
     if (conditions[conditions.length - 1] == '') {
-      conditions.pop();
+      conditions.pop(); // 剔除最后元素
     }
 
-    switch (conditions.length) {
+    switch (conditions.length) { // 根据分离出来的数组长度，在搜索栏下方显示搜索格式选项
       case 0:
         this.setData({
           searchFormatMatched: []
@@ -122,6 +140,7 @@ Page({
         });
         break;
     }
+
     this.setData({
       searchVal: e.detail.value
     });
@@ -175,6 +194,10 @@ Page({
     wx.hideLoading();
   },
 
+  /**
+   * 获取操作员令牌，如果有，则进入后台操作员的页面模式，如果无，则进入前台申请改码模式
+   * @param {*} openid 
+   */
   getOperatorToken: function (openid) {
     var that = this;
     wx.cloud.callFunction({
@@ -324,13 +347,5 @@ Page({
     var d = date.getDate();
     var ds = d < 10 ? '0' + d : d;
     return y + '/' + ms + '/' + ds;
-  },
-
-  onPullDownRefresh: function (e) {
-    wx.showNavigationBarLoading();
-    setTimeout(() => {
-      wx.stopPullDownRefresh();
-      wx.hideNavigationBarLoading();
-    }, 3000);
   }
 });

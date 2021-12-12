@@ -1,4 +1,4 @@
-// pages/input/index.js
+import WxValidate from '../../utils/WxValidate.js'
 Page({
 
   /**
@@ -17,9 +17,55 @@ Page({
   },
 
   /**
+   * 初始化验证函数
+   */
+  initValidate: function(){
+    const rules = {
+      name: {
+        required: true,
+        minlength: 2
+      },
+      contact: {
+        required: true,
+        tel: true
+      },
+      id: {
+        required: true,
+        minlength: 9
+      },
+      address: {
+        required: true,
+        minlength: 4
+      }
+    };
+
+    const messages = {
+      name: {
+        required: '请输入姓名',
+        minlength: '姓名至少2个字'
+      },
+      contact: {
+        required: '请输入联系方式',
+        tel: '请输入13位手机号码'
+      },
+      id :{
+        required: '请输入证件号码',
+        minlength: '证件号码不正确'
+      },
+      address: {
+        required: '请输入住址',
+        minlength: '地址至少4个字'
+      }
+    };
+
+    this.WxValidate = new WxValidate(rules, messages);
+  },
+
+  /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    this.initValidate();
     this.setData({
       applicationInfo: wx.getStorageSync('applicationInfo'),
     });
@@ -121,10 +167,24 @@ Page({
     });
   },
 
+  submitForm: function(e) {
+    console.log(e);
+    const params = e.detail.value;
+    if(!this.WxValidate.checkForm(params)) {
+      const error = this.WxValidate.errorList[0];
+      wx.showModal({
+        content: error.msg,
+      });
+      return false;
+    }
+    this.saveApplication(e);
+  },
+
   /**
-   * 
+   * 保存申请
    */
   saveApplication: function (e) {
+    
     let needUpload = e.currentTarget.dataset.upload;
     console.log(needUpload);
     var that = this;

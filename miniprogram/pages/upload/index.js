@@ -145,7 +145,8 @@ Page({
             wx.hideLoading();
             // 图片上传成功后操作
             that.setData({
-              'applicationInfo.materials': that.data.applicationInfo.materials.concat(res.fileID)
+              'applicationInfo.materials': that.data.applicationInfo.materials.concat(res.fileID),
+              'applicationInfo.status': 1
             });
             // 更新云端数据库记录
             wx.cloud.callFunction({
