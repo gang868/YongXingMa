@@ -10,7 +10,7 @@ Page({
     questionList: []
   },
 
-  onLoad: function(options) {
+  onLoad: function (options) {
     this.setData({
       isApplicant: wx.getStorageSync('isApplicant')
     });
@@ -27,6 +27,7 @@ Page({
         type: 'getQuestion'
       }
     }).then((resp) => {
+      // console.log(resp);
       resp.result.data.forEach(item => {
         var dateStr = that.getDateStr(item.date);
         item.dateStr = dateStr;
@@ -48,14 +49,27 @@ Page({
         showDesc: item.desc
       })
     } else {
-      wx.setStorageSync('questionInfo', item)
+      wx.setStorageSync('questionInfo', item);
       wx.navigateTo({
         url: '/pages/question/index',
-      })
+      });
     }
   },
 
-  closeShowMe: function(){
+  addQuestion: function () {
+    var questionInfo = {
+      title: '',
+      desc: '',
+      source: '本部门',
+      date: this.getDateStr(new Date())
+    };
+    wx.setStorageSync('questionInfo', questionInfo);
+    wx.navigateTo({
+      url: '/pages/question/index',
+    });
+  },
+
+  closeShowMe: function () {
     this.setData({
       showMe: false
     })

@@ -1,4 +1,5 @@
 // 后台管理员反馈管理页面
+const app = getApp();
 Page({
 
   /**
@@ -8,7 +9,7 @@ Page({
     idKindList: ['身份证', '护照'],
     codeColorList: ['黄码', '红码'],
     reasonList: ['发热门诊就诊', '其它'],
-    feedbackStatusList: ['已改码', '改码不成功', '申请被拒'],
+    feedbackStatusList: [],
     feedbackStatusIndex: 0,
     feedbackMemo: '申请提交成功'
   },
@@ -17,7 +18,7 @@ Page({
    * 对申请进行反馈
    * @param {*} e 
    */
-  feedbackApplication:function(e) {
+  feedbackApplication: function (e) {
     var that = this;
     wx.showModal({ // 先抽个皮筋，弹个框框
       title: '确认反馈结果',
@@ -58,21 +59,29 @@ Page({
    * 为懒人准备的默认反馈备注
    * @param {*} e 
    */
-  feedbackStatusChange:function(e) {
-    if(e.detail.value==1) {
-      this.setData({
-        feedbackMemo: '系统禁止纠码'
-      });
-    } else {
-      if(e.detail.value == 2) {
-        this.setData({
-          feedbackMemo: '申请被拒绝'
-        });
-      } else {
+  feedbackStatusChange: function (e) {
+    var statusDesc = this.data.feedbackStatusList[e.detail.value];
+    switch (statusDesc) {
+      case '改码成功':
         this.setData({
           feedbackMemo: '申请提交成功'
         });
-      }
+        break;
+      case '改码失败':
+        this.setData({
+          feedbackMemo: '系统禁止纠码'
+        });
+        break;
+      case '申请被拒':
+        this.setData({
+          feedbackMemo: '申请被拒绝'
+        });
+        break;
+      case '无需纠码':
+        this.setData({
+          feedbackMemo: '甬行码为绿码'
+        });
+        break;
     }
     this.setData({
       feedbackStatusIndex: e.detail.value,
@@ -83,7 +92,7 @@ Page({
    * 万一有比较勤快的，也给准备了
    * @param {*} e 
    */
-  feedbackMemoInput:function(e){
+  feedbackMemoInput: function (e) {
     this.setData({
       feedbackMemo: e.detail.value,
     });
@@ -94,7 +103,16 @@ Page({
    */
   onLoad: function (options) {
     this.setData({
-      applicationInfo: wx.getStorageSync('applicationInfo')
+      applicationInfo: wx.getStorageSync('applicationInfo'),
+      statusDesc: app.globalData.statusDesc
+    });
+    // 深拷贝
+    var fsl = JSON.parse(JSON.stringify(this.data.statusDesc));
+    for (var i = 0; i < 3; i++) {
+      fsl.shift();
+    }
+    this.setData({
+      feedbackStatusList: fsl
     });
   },
 

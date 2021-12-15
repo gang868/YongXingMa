@@ -5,18 +5,24 @@ Page({
    * 页面的初始数据
    */
   data: {
-    saved: true,
-    isNew: false
+    saved: false,
+    isNew: true
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    var data = wx.getStorageSync('questionInfo');
-    var descLength = data.desc.length;
+    var questionInfo = wx.getStorageSync('questionInfo');
+    if(questionInfo.hasOwnProperty('_id')) {
+      this.setData({
+        isNew: false,
+        saved: true
+      });
+    }
+    var descLength = questionInfo.desc.length;
     this.setData({
-      data: data,
+      data: questionInfo,
       descLength: descLength
     });
   },
@@ -56,8 +62,11 @@ Page({
     if (that.data.data.title == '') return;
     if (that.data.data.desc == '') return;
     if (that.data.data.source == '') return;
+
     if (!this.data.saved) {
-      if (this.data.data.isNew) {
+      // console.log('saving....');
+      if (this.data.isNew) {
+        // console.log('new....');
         wx.cloud.callFunction({
           name: 'quickstartFunctions',
           data: {
@@ -66,10 +75,12 @@ Page({
               title: that.data.data.title,
               desc: that.data.data.desc,
               source: that.data.data.source,
-              date: that.data.data.date
+              date: that.data.data.date,
+              active: true
             }
           }
         }).then((resp) => {
+          // console.log(resp);
           that.setData({
             saved: true,
             isNew: false
@@ -101,18 +112,6 @@ Page({
         });
       }
     }
-  },
-
-  newQuestion: function () {
-    this.setData({
-      'data.title': '',
-      'data.desc': '',
-      'data.source': '',
-      'data.date': this.getDateStr(),
-      descLength: 0,
-      saved: false,
-      isNew: true
-    });
   },
 
   getDateStr: function () {

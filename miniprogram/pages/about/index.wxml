@@ -1,6 +1,9 @@
 <page-meta root-font-size="system" />
 <view class="page" style="background-color: lightgray;">
   <view class="page__bd">
+    <view class="button-sp-area cell">
+			<view class="weui-btn_cell weui-btn_cell-primary" aria-role="button" bindtap="addQuestion">增加问题</view>
+		</view>
     <view class="weui-panel weui-panel_access">
       <view class="weui-panel__bd">
         <view class="weui-media-box weui-media-box_text" wx:for="{{questionList}}" wx:key="_id" wx:for-item="item" data-index="{{index}}" bindtap="iAmTaped">
@@ -39,5 +42,5 @@
                 </view>
             </view>
         </view>
-    </view>
+  </view>
 </view>

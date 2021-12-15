@@ -31,6 +31,9 @@ Page({
 
   gotoApply: function(){
     if(this.data.canApply) {
+      this.setData({
+        canApply: false
+      });
       wx.navigateTo({
         url: '/pages/input/index',
       })
