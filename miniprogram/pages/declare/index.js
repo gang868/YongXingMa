@@ -34,9 +34,9 @@ Page({
       this.setData({
         canApply: false
       });
-      wx.navigateTo({
+      wx.redirectTo({
         url: '/pages/input/index',
-      })
+      });
     }
   },
 

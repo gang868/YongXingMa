@@ -7,7 +7,7 @@
       <view class="weui-article__section">
         <view class="weui-article__h2">一、可以纠码的情形</view>
         <view class="weui-article__p">
-          因发热门诊就诊甬行码变码，提供7天以内的核酸检测报告和通信行程卡（绿码），可以纠码；
+          因发热门诊就诊甬行码变码，提供7天以内的核酸检测报告和当天的通信行程卡（绿码），可以纠码；
         </view>
         <view class="weui-article__h2">二、无法纠码的情形</view>
         <view class="weui-article__p">
@@ -24,7 +24,7 @@
       </view>
     </view>
     <view class="button-sp-area" style="margin-top: 0px;">
-      <view class="weui-btn weui-btn_primary" bindtap="submitApplication" disabled="{{canSubmit}}">提交申请</view>
+      <view class="weui-btn weui-btn_primary" bindtap="submitApplication" disabled="{{canSubmit}}">同意并提交</view>
       <view class="weui-btn weui-btn_default" bindtap="goBack">返回</view>
     </view>
   </view>

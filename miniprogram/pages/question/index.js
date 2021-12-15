@@ -23,7 +23,8 @@ Page({
     var descLength = questionInfo.desc.length;
     this.setData({
       data: questionInfo,
-      descLength: descLength
+      descLength: descLength,
+      isApplicant: wx.getStorageSync('isApplicant')
     });
   },
 
@@ -58,6 +59,9 @@ Page({
   },
 
   saveQuestion: function () {
+    if(this.data.isApplicant){
+      return;
+    }
     var that = this;
     if (that.data.data.title == '') return;
     if (that.data.data.desc == '') return;

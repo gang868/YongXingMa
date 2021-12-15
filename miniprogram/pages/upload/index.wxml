@@ -29,7 +29,7 @@
                 <view class="weui-uploader__info">{{files.length}}/3</view>
               </view>
               <view class="weui-uploader__tips">
-                请先选择好所有待上传图片，然后上传图片（核酸检测报告1-2张，通信行程卡1张），至少2张最多3张图片。每次上传会依次清空原来图片。
+                请先选择好所有待上传图片，然后上传图片（7天以内核酸检测报告1-2张，当天通信行程卡1张），至少2张最多3张图片。每次上传会依次清空原来图片。
               </view>
             </view>
             <view class="weui-uploader__bd">
