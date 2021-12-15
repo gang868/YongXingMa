@@ -8,7 +8,7 @@ Page({
     idKindList: ['身份证', '护照'],
     codeColorList: ['黄码', '红码'],
     reasonList: ['发热门诊就诊', '其它'],
-    feedbackStatusList: ['已改码', '改码不成功'],
+    feedbackStatusList: ['已改码', '改码不成功', '申请被拒'],
     feedbackStatusIndex: 0,
     feedbackMemo: '申请提交成功'
   },
@@ -64,9 +64,15 @@ Page({
         feedbackMemo: '系统禁止纠码'
       });
     } else {
-      this.setData({
-        feedbackMemo: '申请提交成功'
-      });
+      if(e.detail.value == 2) {
+        this.setData({
+          feedbackMemo: '申请被拒绝'
+        });
+      } else {
+        this.setData({
+          feedbackMemo: '申请提交成功'
+        });
+      }
     }
     this.setData({
       feedbackStatusIndex: e.detail.value,

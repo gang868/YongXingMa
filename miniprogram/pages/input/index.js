@@ -6,6 +6,7 @@ Page({
    */
   data: {
     saved: true,
+    needUpload: false,
     idIndex: 0,
     idKindList: ['身份证', '护照'],
     idInputType: 'idcard',
@@ -69,6 +70,12 @@ Page({
     this.setData({
       applicationInfo: wx.getStorageSync('applicationInfo'),
     });
+
+    if(this.data.applicationInfo.status==0) {
+      this.setData({
+        needUpload: true
+      });
+    }
 
     if (this.data.applicationInfo.idKind == '护照') {
       this.setData({
@@ -168,7 +175,6 @@ Page({
   },
 
   submitForm: function(e) {
-    console.log(e);
     const params = e.detail.value;
     if(!this.WxValidate.checkForm(params)) {
       const error = this.WxValidate.errorList[0];
@@ -184,9 +190,6 @@ Page({
    * 保存申请
    */
   saveApplication: function (e) {
-    
-    let needUpload = e.currentTarget.dataset.upload;
-    console.log(needUpload);
     var that = this;
     wx.showLoading({
       title: '正在保存申请....',
@@ -218,10 +221,10 @@ Page({
           that.setData({
             saved: true
           });
-          if (needUpload) {
+          if (that.data.needUpload) {
             wx.navigateTo({
               url: '/pages/upload/index'
-            })
+            });
           } else {
             wx.navigateBack({
               delta: 1,
@@ -241,9 +244,13 @@ Page({
             'applicationInfo._id': resp.result._id
           });
           wx.setStorageSync('applicationInfo', this.data.applicationInfo);
-          if (needUpload) {
+          if (that.data.needUpload) {
+            wx.navigateTo({
+              url: '/pages/upload/index'
+            });
+          } else {
             wx.navigateBack({
-              delta: 0,
+              delta: 1,
             });
           }
         });

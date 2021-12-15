@@ -7,7 +7,7 @@
       <view class="weui-article__section">
         <view class="weui-article__h2">一、可以纠码的情形</view>
         <view class="weui-article__p">
-          因发热门诊就诊甬行码变码，提供3天以内的核酸检测报告和通信行程卡（绿码），可以纠码；
+          因发热门诊就诊甬行码变码，提供7天以内的核酸检测报告和通信行程卡（绿码），可以纠码；
         </view>
         <view class="weui-article__h2">二、无法纠码的情形</view>
         <view class="weui-article__p">
@@ -17,7 +17,7 @@
         <view class="weui-article__p">
           请如实提供核酸检测报告、通信行程卡，不得采取伪造、替代等手段提供虚假证明，否则相关法律责任和后果自负。
         </view>
-        <view class="weui-article__h2">四、关于小程序</view>
+        <view class="weui-article__h2">四、受理地域</view>
         <view class="weui-article__p" style="margin-bottom: 5px;">
           仅限江北区文教派出所辖区居民（常住人口、暂住人口）申请纠码。
         </view>

@@ -331,7 +331,7 @@ Page({
       'materials': [],
     });
     wx.navigateTo({
-      url: '/pages/input/index',
+      url: '/pages/declare/index',
     })
   },
 

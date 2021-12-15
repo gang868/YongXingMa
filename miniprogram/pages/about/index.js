@@ -10,6 +10,12 @@ Page({
     questionList: []
   },
 
+  onLoad: function(options) {
+    this.setData({
+      isApplicant: wx.getStorageSync('isApplicant')
+    });
+  },
+
   /**
    * 生命周期函数--监听页面加载
    */
@@ -30,15 +36,6 @@ Page({
         questionList: resp.result.data
       });
     });
-
-    try {
-      this.setData({
-        operatorInfo: wx.getStorageSync('operatorInfo'),
-        isApplicant: false
-      });
-    } catch (e) {
-      console('operatorInfo: ', e);
-    }
   },
 
   iAmTaped: function (e) {

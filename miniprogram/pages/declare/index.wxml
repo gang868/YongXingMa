@@ -1,0 +1,36 @@
+<scroll-view class="page" scroll-y="true" show-scrollbar="false">
+  <view class="page__bd">
+    <view class="weui-article">
+      <view class="weui-article__h1" style="text-align: center;">用户隐私和数据使用申明</view>
+      <view class="weui-article__section">
+        <view class="weui-article__p">
+          本小程序将收集和暂存如下隐私数据：被申请人的姓名、联系方式、证件类型及号码、住址、通信行程卡和核酸检测报告。
+        </view>
+        <view class="weui-article__p">
+          1. 上述信息仅用于甬行码纠错的核查和纠码。
+        </view>
+        <view class="weui-article__p">
+          2. 如发现被申请人是密接人员或是同时空伴随者，卫生防疫部门有权获取上述信息。
+        </view>
+        <view class="weui-article__p">
+          3. 如发现提供虚假、错误信息或证明，或者证明材料不齐，有权拒绝受理申请。
+        </view>
+        <view class="weui-article__p">
+          4. 收到申请反馈后，为防范风险，申请人请自行删除申请记录。
+        </view>
+        <view class="weui-article__p">
+          5. 不会向任何无关个人(部门)提供申请数据。用户删除申请后，云端也不会留存任何数据。
+        </view>
+      </view>
+      <label class="weui-agree"  bindtap="agreeClause" >
+            <checkbox class="weui-agree__checkbox-check" aria-labelledby="js_agree_txt js_agree_link"/>
+            <i class="weui-agree__checkbox"></i>
+            <span class="weui-agree__text"><text aria-hidden="true" id="js_agree_txt">我已经知晓、理解并同意上述条款</text></span>
+        </label>
+    </view>
+    <view class="button-sp-area" style="margin-top: 0px;">
+      <view class="weui-btn weui-btn_primary" bindtap="gotoApply" wx:if="{{canApply}}">发起申请</view>
+      <view class="weui-btn weui-btn_default" bindtap="goBack">返回</view>
+    </view>
+  </view>
+</scroll-view>
